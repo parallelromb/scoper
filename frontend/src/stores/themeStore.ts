@@ -9,7 +9,7 @@ interface ThemeState {
 }
 
 export const useThemeStore = create<ThemeState>((set, get) => ({
-  theme: 'dark',
+  theme: 'light',
 
   toggle: () => {
     const next = get().theme === 'dark' ? 'light' : 'dark'
@@ -20,7 +20,7 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
 
   init: () => {
     const stored = localStorage.getItem('aries-theme') as Theme | null
-    const theme = stored ?? 'dark'
+    const theme = stored ?? 'light'
     document.documentElement.classList.toggle('dark', theme === 'dark')
     set({ theme })
   },

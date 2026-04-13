@@ -15,12 +15,12 @@ import { useEstimateStore } from '../stores/estimateStore'
 type ViewMode = 'command' | 'estimation'
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: '#3b82f6',
+  draft: '#0071e3',
   complete: '#10b981',
-  archived: '#94a3b8',
+  archived: '#86868b',
 }
 
-const PIE_COLORS = ['#3b82f6', '#10b981', '#94a3b8', '#f59e0b']
+const PIE_COLORS = ['#0071e3', '#10b981', '#86868b', '#f59e0b']
 
 export default function Dashboard() {
   const { estimates, listEstimates, loading } = useEstimateStore()
@@ -32,7 +32,7 @@ export default function Dashboard() {
     listEstimates()
   }, [listEstimates])
 
-  // ── Computed stats ──
+  // -- Computed stats --
   const totalEstimates = estimates.length
   const avgConfidence =
     estimates.length > 0
@@ -82,15 +82,15 @@ export default function Dashboard() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-surface-900 dark:text-white">Dashboard</h1>
-        <div className="flex bg-surface-100 dark:bg-surface-800 rounded-lg p-0.5">
+        <h1 className="text-2xl font-bold text-surface-900">Dashboard</h1>
+        <div className="flex bg-surface-100 rounded-lg p-0.5">
           <button
             onClick={() => setView('command')}
             className={cn(
               'px-4 py-1.5 rounded-md text-sm font-medium transition-colors',
               view === 'command'
-                ? 'bg-white dark:bg-surface-700 text-surface-900 dark:text-white shadow-sm'
-                : 'text-surface-500 hover:text-surface-700 dark:hover:text-surface-300',
+                ? 'bg-white text-surface-900 shadow-sm'
+                : 'text-surface-500 hover:text-surface-700',
             )}
           >
             Command Center
@@ -100,8 +100,8 @@ export default function Dashboard() {
             className={cn(
               'px-4 py-1.5 rounded-md text-sm font-medium transition-colors',
               view === 'estimation'
-                ? 'bg-white dark:bg-surface-700 text-surface-900 dark:text-white shadow-sm'
-                : 'text-surface-500 hover:text-surface-700 dark:hover:text-surface-300',
+                ? 'bg-white text-surface-900 shadow-sm'
+                : 'text-surface-500 hover:text-surface-700',
             )}
           >
             Estimation
@@ -121,7 +121,7 @@ export default function Dashboard() {
                 </div>
                 <span className="text-xs text-surface-500 font-medium">Total Estimates</span>
               </div>
-              <div className="text-3xl font-bold text-surface-900 dark:text-white">
+              <div className="text-3xl font-bold text-surface-900">
                 {totalEstimates}
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function Dashboard() {
                 </div>
                 <span className="text-xs text-surface-500 font-medium">Avg Confidence</span>
               </div>
-              <div className="text-3xl font-bold text-surface-900 dark:text-white">
+              <div className="text-3xl font-bold text-surface-900">
                 {avgConfidence}%
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function Dashboard() {
                 </div>
                 <span className="text-xs text-surface-500 font-medium">Total Hours</span>
               </div>
-              <div className="text-3xl font-bold text-surface-900 dark:text-white">
+              <div className="text-3xl font-bold text-surface-900">
                 {totalHours.toLocaleString()}
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function Dashboard() {
                 </div>
                 <span className="text-xs text-surface-500 font-medium">Avg Cost</span>
               </div>
-              <div className="text-3xl font-bold text-surface-900 dark:text-white">
+              <div className="text-3xl font-bold text-surface-900">
                 ${avgCost.toLocaleString()}
               </div>
             </div>
@@ -164,7 +164,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Status doughnut */}
             <div className="glass-card p-5">
-              <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-4">
+              <h3 className="text-sm font-semibold text-surface-700 mb-4">
                 Status Distribution
               </h3>
               {pieData.length > 0 ? (
@@ -210,16 +210,16 @@ export default function Dashboard() {
 
             {/* Confidence distribution */}
             <div className="glass-card p-5">
-              <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-4">
+              <h3 className="text-sm font-semibold text-surface-700 mb-4">
                 Confidence Distribution
               </h3>
               {totalEstimates > 0 ? (
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={confBuckets}>
-                    <XAxis dataKey="range" tick={{ fontSize: 12 }} />
-                    <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                    <XAxis dataKey="range" tick={{ fontSize: 12, fill: '#6e6e73' }} />
+                    <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#6e6e73' }} />
                     <Tooltip />
-                    <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="count" fill="#0071e3" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -232,15 +232,15 @@ export default function Dashboard() {
 
           {/* Recent estimates table */}
           <div className="glass-card overflow-hidden">
-            <div className="px-5 py-4 border-b border-surface-200/60 dark:border-surface-700/40">
-              <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300">
+            <div className="px-5 py-4 border-b border-surface-200/60">
+              <h3 className="text-sm font-semibold text-surface-700">
                 Recent Estimates
               </h3>
             </div>
             {estimates.length > 0 ? (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-surface-200/60 dark:border-surface-700/40">
+                  <tr className="border-b border-surface-200/60">
                     <th className="text-left px-5 py-2.5 text-surface-500 font-medium">Name</th>
                     <th className="text-left px-5 py-2.5 text-surface-500 font-medium">Status</th>
                     <th className="text-right px-5 py-2.5 text-surface-500 font-medium">Confidence</th>
@@ -252,9 +252,9 @@ export default function Dashboard() {
                   {estimates.slice(0, 10).map((est) => (
                     <tr
                       key={est.id}
-                      className="border-b border-surface-100/60 dark:border-surface-800/40 hover:bg-surface-50/50 dark:hover:bg-surface-800/20"
+                      className="border-b border-surface-100/60 hover:bg-surface-50/50"
                     >
-                      <td className="px-5 py-3 text-surface-900 dark:text-white font-medium">
+                      <td className="px-5 py-3 text-surface-900 font-medium">
                         {est.name}
                       </td>
                       <td className="px-5 py-3">
@@ -262,16 +262,16 @@ export default function Dashboard() {
                           className={cn(
                             'px-2 py-0.5 rounded-full text-xs font-medium capitalize',
                             est.status === 'complete'
-                              ? 'bg-success-100 text-success-600 dark:bg-success-500/20 dark:text-success-400'
+                              ? 'bg-success-100 text-success-600'
                               : est.status === 'archived'
-                                ? 'bg-surface-100 text-surface-500 dark:bg-surface-700 dark:text-surface-400'
-                                : 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300',
+                                ? 'bg-surface-100 text-surface-500'
+                                : 'bg-primary-100 text-primary-600',
                           )}
                         >
                           {est.status}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-right text-surface-600 dark:text-surface-400">
+                      <td className="px-5 py-3 text-right text-surface-600">
                         {est.confidence_score != null ? `${Math.round(est.confidence_score)}%` : '--'}
                       </td>
                       <td className="px-5 py-3 text-right text-surface-500 text-xs">
@@ -311,13 +311,13 @@ export default function Dashboard() {
                 placeholder="Search estimates..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-surface-200 dark:border-surface-700 bg-white/80 dark:bg-surface-800/80 text-sm text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-surface-200 bg-white text-sm text-surface-900 placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 rounded-lg border border-surface-200 dark:border-surface-700 bg-white/80 dark:bg-surface-800/80 text-sm text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400"
+              className="px-3 py-2 rounded-lg border border-surface-200 bg-white text-sm text-surface-900 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400"
             >
               <option value="all">All Status</option>
               <option value="draft">Draft</option>
@@ -327,7 +327,7 @@ export default function Dashboard() {
           </div>
 
           {/* Estimate list */}
-          <div className="glass-card divide-y divide-surface-200/60 dark:divide-surface-700/40">
+          <div className="glass-card divide-y divide-surface-200/60">
             {loading ? (
               <div className="px-5 py-12 text-center text-surface-400 text-sm">Loading...</div>
             ) : filtered.length > 0 ? (
@@ -335,10 +335,10 @@ export default function Dashboard() {
                 <Link
                   key={est.id}
                   to={`/estimates/${est.id}`}
-                  className="flex items-center justify-between px-5 py-4 hover:bg-surface-50/50 dark:hover:bg-surface-800/20 transition-colors no-underline"
+                  className="flex items-center justify-between px-5 py-4 hover:bg-surface-50/80 transition-colors no-underline"
                 >
                   <div>
-                    <div className="text-sm font-medium text-surface-900 dark:text-white">
+                    <div className="text-sm font-medium text-surface-900">
                       {est.name}
                     </div>
                     <div className="flex items-center gap-3 mt-1 text-xs text-surface-400">
@@ -346,10 +346,10 @@ export default function Dashboard() {
                         className={cn(
                           'px-2 py-0.5 rounded-full capitalize',
                           est.status === 'complete'
-                            ? 'bg-success-100 text-success-600 dark:bg-success-500/20 dark:text-success-400'
+                            ? 'bg-success-100 text-success-600'
                             : est.status === 'archived'
-                              ? 'bg-surface-100 text-surface-500 dark:bg-surface-700 dark:text-surface-400'
-                              : 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300',
+                              ? 'bg-surface-100 text-surface-500'
+                              : 'bg-primary-100 text-primary-600',
                         )}
                       >
                         {est.status}
@@ -360,7 +360,7 @@ export default function Dashboard() {
                   </div>
                   <div className="text-right">
                     {est.confidence_score != null && (
-                      <div className="text-sm font-medium text-surface-700 dark:text-surface-300">
+                      <div className="text-sm font-medium text-surface-700">
                         {Math.round(est.confidence_score)}%
                       </div>
                     )}

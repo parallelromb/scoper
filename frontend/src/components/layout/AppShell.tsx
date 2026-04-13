@@ -50,13 +50,13 @@ export default function AppShell() {
   }
 
   return (
-    <div className="min-h-svh flex flex-col bg-surface-50 dark:bg-surface-950">
+    <div className="min-h-svh flex flex-col bg-surface-50">
       {/* Top Navbar */}
       <header className="glass-nav sticky top-0 z-40 h-14 flex items-center px-4 gap-4">
         {/* Mobile hamburger */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="lg:hidden p-2 rounded-lg text-surface-500 hover:text-surface-700 dark:hover:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+          className="lg:hidden p-2 rounded-lg text-surface-500 hover:text-surface-700 hover:bg-surface-100 transition-colors"
         >
           {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
@@ -64,7 +64,7 @@ export default function AppShell() {
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2 no-underline shrink-0">
           <Sparkles className="w-5 h-5 text-primary-500" />
-          <span className="text-lg font-bold tracking-tight text-surface-900 dark:text-white">
+          <span className="text-lg font-bold tracking-tight text-surface-900">
             ARIES
           </span>
         </NavLink>
@@ -80,8 +80,8 @@ export default function AppShell() {
                 cn(
                   'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors no-underline',
                   isActive
-                    ? 'bg-primary-500/10 text-primary-600 dark:text-primary-400'
-                    : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800/60'
+                    ? 'bg-primary-500/10 text-primary-600'
+                    : 'text-surface-500 hover:text-surface-700 hover:bg-surface-100'
                 )
               }
             >
@@ -95,7 +95,7 @@ export default function AppShell() {
         <div className="flex items-center gap-2 ml-auto lg:ml-0">
           <button
             onClick={toggle}
-            className="p-2 rounded-lg text-surface-500 hover:text-surface-700 dark:hover:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+            className="p-2 rounded-lg text-surface-500 hover:text-surface-700 hover:bg-surface-100 transition-colors"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -107,11 +107,11 @@ export default function AppShell() {
               onClick={() => setUserMenuOpen(!userMenuOpen)}
               className={cn(
                 'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors',
-                'text-surface-600 dark:text-surface-300',
-                'hover:bg-surface-100 dark:hover:bg-surface-800'
+                'text-surface-600',
+                'hover:bg-surface-100'
               )}
             >
-              <div className="w-6 h-6 rounded-full bg-primary-500/20 flex items-center justify-center text-xs font-semibold text-primary-600 dark:text-primary-400">
+              <div className="w-6 h-6 rounded-full bg-primary-500/15 flex items-center justify-center text-xs font-semibold text-primary-600">
                 {user?.username?.[0]?.toUpperCase() ?? '?'}
               </div>
               <span className="hidden sm:inline">{user?.display_name ?? user?.username}</span>
@@ -120,15 +120,15 @@ export default function AppShell() {
 
             {userMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 glass-card py-1 shadow-lg z-50">
-                <div className="px-4 py-2 border-b border-surface-200 dark:border-surface-700">
-                  <p className="text-sm font-medium text-surface-900 dark:text-white">
+                <div className="px-4 py-2 border-b border-surface-200/60">
+                  <p className="text-sm font-medium text-surface-900">
                     {user?.display_name ?? user?.username}
                   </p>
                   <p className="text-xs text-surface-500 capitalize">{user?.role}</p>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-error-500 hover:bg-error-50 dark:hover:bg-error-500/10 transition-colors"
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-error-500 hover:bg-error-50 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign out
@@ -142,7 +142,7 @@ export default function AppShell() {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/30 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/20 z-30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -166,8 +166,8 @@ export default function AppShell() {
                 cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors no-underline',
                   isActive
-                    ? 'bg-primary-500/10 text-primary-600 dark:text-primary-400'
-                    : 'text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800'
+                    ? 'bg-primary-500/10 text-primary-600'
+                    : 'text-surface-600 hover:bg-surface-100'
                 )
               }
             >

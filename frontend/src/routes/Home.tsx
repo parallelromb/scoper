@@ -12,7 +12,7 @@ const modes = [
     to: '/quick-estimate',
     color: 'text-primary-500',
     bg: 'bg-primary-500/10',
-    border: 'hover:border-primary-300 dark:hover:border-primary-600',
+    border: 'hover:border-primary-300',
   },
   {
     title: 'Build Estimate',
@@ -21,7 +21,7 @@ const modes = [
     to: '/pipeline',
     color: 'text-agent-500',
     bg: 'bg-agent-500/10',
-    border: 'hover:border-agent-300 dark:hover:border-agent-600',
+    border: 'hover:border-agent-300',
   },
   {
     title: 'Update Existing',
@@ -30,7 +30,7 @@ const modes = [
     to: '/dashboard',
     color: 'text-success-500',
     bg: 'bg-success-500/10',
-    border: 'hover:border-success-400 dark:hover:border-success-600',
+    border: 'hover:border-success-400',
   },
 ]
 
@@ -51,10 +51,10 @@ export default function Home() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold tracking-tight text-surface-900 dark:text-white">
+        <h1 className="text-3xl font-bold tracking-tight text-surface-900">
           Welcome to ARIES
         </h1>
-        <p className="mt-3 text-surface-500 dark:text-surface-400">
+        <p className="mt-3 text-surface-500">
           Choose how you want to create your estimate
         </p>
       </div>
@@ -80,10 +80,10 @@ export default function Home() {
             >
               <mode.icon className={cn('w-6 h-6', mode.color)} />
             </div>
-            <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-2">
+            <h2 className="text-lg font-semibold text-surface-900 mb-2">
               {mode.title}
             </h2>
-            <p className="text-sm text-surface-500 dark:text-surface-400">
+            <p className="text-sm text-surface-500">
               {mode.description}
             </p>
           </Link>
@@ -97,10 +97,10 @@ export default function Home() {
             <BarChart3 className="w-5 h-5 text-primary-500" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-surface-900 dark:text-white">
+            <div className="text-2xl font-bold text-surface-900">
               {totalEstimates}
             </div>
-            <div className="text-xs text-surface-500 dark:text-surface-400">
+            <div className="text-xs text-surface-500">
               Total Estimates
             </div>
           </div>
@@ -110,10 +110,10 @@ export default function Home() {
             <TrendingUp className="w-5 h-5 text-success-500" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-surface-900 dark:text-white">
+            <div className="text-2xl font-bold text-surface-900">
               {avgConfidence > 0 ? `${Math.round(avgConfidence)}%` : '--'}
             </div>
-            <div className="text-xs text-surface-500 dark:text-surface-400">
+            <div className="text-xs text-surface-500">
               Avg Confidence
             </div>
           </div>
@@ -123,10 +123,10 @@ export default function Home() {
             <Clock className="w-5 h-5 text-agent-500" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-surface-900 dark:text-white">
+            <div className="text-2xl font-bold text-surface-900">
               {estimates.reduce((s, e) => s + (e.total_effort_hours || 0), 0).toLocaleString()}
             </div>
-            <div className="text-xs text-surface-500 dark:text-surface-400">
+            <div className="text-xs text-surface-500">
               Total Hours
             </div>
           </div>
@@ -136,15 +136,15 @@ export default function Home() {
       {/* Recent estimates */}
       {recent.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-3">
+          <h3 className="text-sm font-semibold text-surface-500 uppercase tracking-wider mb-3">
             Recent Estimates
           </h3>
-          <div className="glass-card divide-y divide-surface-200/60 dark:divide-surface-700/40">
+          <div className="glass-card divide-y divide-surface-200/60">
             {recent.map((est) => (
               <Link
                 key={est.id}
                 to={`/estimates/${est.id}`}
-                className="flex items-center justify-between px-5 py-3 hover:bg-surface-50/50 dark:hover:bg-surface-800/30 transition-colors no-underline"
+                className="flex items-center justify-between px-5 py-3 hover:bg-surface-50/80 transition-colors no-underline"
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -157,7 +157,7 @@ export default function Home() {
                           : 'bg-primary-500',
                     )}
                   />
-                  <span className="text-sm font-medium text-surface-900 dark:text-white">
+                  <span className="text-sm font-medium text-surface-900">
                     {est.name}
                   </span>
                 </div>

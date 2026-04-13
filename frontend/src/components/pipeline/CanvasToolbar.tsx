@@ -79,7 +79,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
       setEdges(graph.edges)
       setGraphName(graph.name)
     } catch {
-      // invalid file — silently ignore
+      // invalid file -- silently ignore
     }
     e.target.value = ''
   }
@@ -91,16 +91,16 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
 
   const btnClass = cn(
     'p-2 rounded-lg transition-colors',
-    'hover:bg-surface-200/60 dark:hover:bg-surface-700/60',
-    'text-surface-600 dark:text-surface-300'
+    'hover:bg-surface-100',
+    'text-surface-600'
   )
 
   return (
     <div className={cn(
       'absolute top-4 left-1/2 -translate-x-1/2 z-10',
       'flex items-center gap-1 px-2 py-1.5 rounded-xl',
-      'bg-white/90 dark:bg-surface-800/90 backdrop-blur-xl',
-      'border border-surface-200 dark:border-surface-700/50 shadow-lg'
+      'bg-white/90 backdrop-blur-xl',
+      'border border-surface-200 shadow-sm'
     )}>
       <button onClick={() => saveGraph()} className={btnClass} title="Save">
         <Save className="w-4 h-4" />
@@ -115,7 +115,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
         {showLoadMenu && (
           <div className={cn(
             'absolute top-full mt-2 left-0 w-52 rounded-lg shadow-lg z-50',
-            'bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
+            'bg-white border border-surface-200',
             'max-h-60 overflow-y-auto py-1'
           )}>
             {savedPipelines.length === 0 ? (
@@ -128,7 +128,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
                     loadGraph(p.id)
                     setShowLoadMenu(false)
                   }}
-                  className="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 text-surface-700 dark:text-surface-300"
+                  className="w-full text-left px-3 py-2 text-xs hover:bg-surface-50 text-surface-700"
                 >
                   {p.name}
                   <div className="text-[10px] text-surface-400 mt-0.5">
@@ -141,7 +141,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
         )}
       </div>
 
-      <div className="w-px h-5 bg-surface-200 dark:bg-surface-700 mx-1" />
+      <div className="w-px h-5 bg-surface-200 mx-1" />
 
       <button
         onClick={onRun}
@@ -149,7 +149,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
         className={cn(
           'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
           isRunning
-            ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 cursor-wait'
+            ? 'bg-amber-100 text-amber-700 cursor-wait'
             : 'bg-emerald-500 hover:bg-emerald-600 text-white',
           nodes.length === 0 && 'opacity-50 cursor-not-allowed'
         )}
@@ -159,7 +159,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
         {isRunning ? 'Running...' : 'Run'}
       </button>
 
-      <div className="w-px h-5 bg-surface-200 dark:bg-surface-700 mx-1" />
+      <div className="w-px h-5 bg-surface-200 mx-1" />
 
       <button onClick={() => fileInputRef.current?.click()} className={btnClass} title="Import JSON">
         <Upload className="w-4 h-4" />
@@ -170,7 +170,7 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
         <Download className="w-4 h-4" />
       </button>
 
-      <div className="w-px h-5 bg-surface-200 dark:bg-surface-700 mx-1" />
+      <div className="w-px h-5 bg-surface-200 mx-1" />
 
       <button onClick={() => zoomIn()} className={btnClass} title="Zoom In">
         <ZoomIn className="w-4 h-4" />
@@ -182,12 +182,11 @@ export default function CanvasToolbar({ onRun, isRunning }: CanvasToolbarProps) 
         <Maximize className="w-4 h-4" />
       </button>
 
-      <div className="w-px h-5 bg-surface-200 dark:bg-surface-700 mx-1" />
+      <div className="w-px h-5 bg-surface-200 mx-1" />
 
-      <button onClick={clearCanvas} className={cn(btnClass, 'text-rose-500 dark:text-rose-400')} title="Clear Canvas">
+      <button onClick={clearCanvas} className={cn(btnClass, 'text-rose-500')} title="Clear Canvas">
         <Trash2 className="w-4 h-4" />
       </button>
     </div>
   )
 }
-

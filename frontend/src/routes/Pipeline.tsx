@@ -9,7 +9,6 @@ import {
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 
-import { cn } from '../lib/cn'
 import { usePipelineStore } from '../stores/pipelineStore'
 import { useExecutionStore } from '../stores/executionStore'
 import { getNodeDef } from '../lib/node-registry'
@@ -113,12 +112,12 @@ function PipelineInner() {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
-      {/* Left — Node Palette */}
+      {/* Left -- Node Palette */}
       <div className="w-[280px] shrink-0 overflow-hidden">
         <NodePalette onTemplateClick={handleTemplateClick} />
       </div>
 
-      {/* Center — Canvas */}
+      {/* Center -- Canvas */}
       <div className="flex-1 relative" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
@@ -137,28 +136,25 @@ function PipelineInner() {
           defaultEdgeOptions={{
             type: 'smoothstep',
             animated: false,
-            style: { strokeWidth: 2, stroke: '#94a3b8' },
+            style: { strokeWidth: 2, stroke: '#d2d2d7' },
           }}
-          className={cn(
-            'bg-surface-50 dark:bg-surface-950',
-            '[&_.react-flow__edge-path]:stroke-surface-400 dark:[&_.react-flow__edge-path]:stroke-surface-600'
-          )}
+          className="bg-[#fafafa]"
         >
           <CanvasToolbar onRun={handleRun} isRunning={isRunning} />
           <MiniMap
             position="bottom-right"
-            className="!bg-white/80 dark:!bg-surface-800/80 !border-surface-200 dark:!border-surface-700 !rounded-lg !shadow-md"
-            nodeColor={() => '#94a3b8'}
-            maskColor="rgba(0,0,0,0.08)"
+            className="!bg-white/90 !border-surface-200 !rounded-lg !shadow-sm"
+            nodeColor={() => '#86868b'}
+            maskColor="rgba(0,0,0,0.06)"
           />
-          <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#cbd5e1" className="dark:!opacity-20" />
+          <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#d2d2d7" />
         </ReactFlow>
 
         {/* Execution overlay */}
         {showOverlay && <ExecutionOverlay />}
       </div>
 
-      {/* Right — Properties Panel */}
+      {/* Right -- Properties Panel */}
       {selectedNodeId && (
         <div className="w-[320px] shrink-0 overflow-hidden">
           <PropertiesPanel />

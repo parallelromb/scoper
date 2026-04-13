@@ -5,7 +5,7 @@ import { Trash2, X } from 'lucide-react'
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <label className="block text-[11px] font-medium text-surface-500 dark:text-surface-400 mb-1">
+    <label className="block text-[11px] font-medium text-surface-500 mb-1">
       {children}
     </label>
   )
@@ -39,27 +39,34 @@ export default function PropertiesPanel() {
   }
 
   const categoryBadgeColors: Record<string, string> = {
-    sky: 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300',
-    violet: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
-    amber: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
-    emerald: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-    slate: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
-    cyan: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
+    sky: 'bg-sky-100 text-sky-700',
+    violet: 'bg-violet-100 text-violet-700',
+    amber: 'bg-amber-100 text-amber-700',
+    emerald: 'bg-emerald-100 text-emerald-700',
+    slate: 'bg-slate-100 text-slate-700',
+    cyan: 'bg-cyan-100 text-cyan-700',
   }
 
+  const inputClass = cn(
+    'w-full px-3 py-2 text-xs rounded-lg',
+    'bg-surface-50 border border-surface-200',
+    'text-surface-800',
+    'focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500'
+  )
+
   return (
-    <div className="flex flex-col h-full bg-white/80 dark:bg-surface-900/80 backdrop-blur-xl border-l border-surface-200 dark:border-surface-700/50">
+    <div className="flex flex-col h-full bg-white/90 backdrop-blur-xl border-l border-surface-200">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-surface-200 dark:border-surface-700/50">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-surface-200">
         <div>
-          <h3 className="text-sm font-semibold text-surface-800 dark:text-surface-100">Properties</h3>
+          <h3 className="text-sm font-semibold text-surface-800">Properties</h3>
           <span className={cn('inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-medium', categoryBadgeColors[nodeDef?.color || 'slate'])}>
             {meta.label}
           </span>
         </div>
         <button
           onClick={() => setSelectedNode(null)}
-          className="p-1 rounded hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+          className="p-1 rounded hover:bg-surface-100 transition-colors"
         >
           <X className="w-4 h-4 text-surface-400" />
         </button>
@@ -74,19 +81,14 @@ export default function PropertiesPanel() {
             type="text"
             value={nodeData.label}
             onChange={(e) => updateLabel(e.target.value)}
-            className={cn(
-              'w-full px-3 py-2 text-xs rounded-lg',
-              'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-              'text-surface-800 dark:text-surface-200',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500'
-            )}
+            className={inputClass}
           />
         </div>
 
         {/* Node type */}
         <div>
           <Label>Node Type</Label>
-          <div className="text-xs text-surface-600 dark:text-surface-300 font-mono bg-surface-50 dark:bg-surface-800 px-3 py-2 rounded-lg border border-surface-200 dark:border-surface-700">
+          <div className="text-xs text-surface-600 font-mono bg-surface-50 px-3 py-2 rounded-lg border border-surface-200">
             {nodeData.nodeType}
           </div>
         </div>
@@ -99,12 +101,7 @@ export default function PropertiesPanel() {
               <select
                 value={(config.model as string) || ''}
                 onChange={(e) => updateConfig('model', e.target.value)}
-                className={cn(
-                  'w-full px-3 py-2 text-xs rounded-lg appearance-none',
-                  'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-                  'text-surface-800 dark:text-surface-200',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-                )}
+                className={cn(inputClass, 'appearance-none')}
               >
                 <option value="">Default (from config)</option>
                 <option value="gemma3:27b">Gemma 3 27B</option>
@@ -137,12 +134,7 @@ export default function PropertiesPanel() {
                 type="number"
                 value={Number(config.maxTokens ?? 4096)}
                 onChange={(e) => updateConfig('maxTokens', parseInt(e.target.value) || 4096)}
-                className={cn(
-                  'w-full px-3 py-2 text-xs rounded-lg',
-                  'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-                  'text-surface-800 dark:text-surface-200',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-                )}
+                className={inputClass}
               />
             </div>
 
@@ -153,12 +145,7 @@ export default function PropertiesPanel() {
                 onChange={(e) => updateConfig('systemPrompt', e.target.value)}
                 rows={4}
                 placeholder="Leave blank for default agent prompt..."
-                className={cn(
-                  'w-full px-3 py-2 text-xs rounded-lg resize-y',
-                  'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-                  'text-surface-800 dark:text-surface-200 placeholder:text-surface-400',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-                )}
+                className={cn(inputClass, 'resize-y placeholder:text-surface-400')}
               />
             </div>
           </>
@@ -176,12 +163,7 @@ export default function PropertiesPanel() {
                 max="1"
                 value={Number(config.threshold ?? 0.7)}
                 onChange={(e) => updateConfig('threshold', parseFloat(e.target.value))}
-                className={cn(
-                  'w-full px-3 py-2 text-xs rounded-lg',
-                  'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-                  'text-surface-800 dark:text-surface-200',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-                )}
+                className={inputClass}
               />
             </div>
             <div>
@@ -189,12 +171,7 @@ export default function PropertiesPanel() {
               <select
                 value={(config.operator as string) || '>='}
                 onChange={(e) => updateConfig('operator', e.target.value)}
-                className={cn(
-                  'w-full px-3 py-2 text-xs rounded-lg appearance-none',
-                  'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-                  'text-surface-800 dark:text-surface-200',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-                )}
+                className={cn(inputClass, 'appearance-none')}
               >
                 <option value=">=">{'Greater or equal (>=)'}</option>
                 <option value=">">{'Greater than (>)'}</option>
@@ -213,12 +190,7 @@ export default function PropertiesPanel() {
             <select
               value={(config.format as string) || 'pdf'}
               onChange={(e) => updateConfig('format', e.target.value)}
-              className={cn(
-                'w-full px-3 py-2 text-xs rounded-lg appearance-none',
-                'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-                'text-surface-800 dark:text-surface-200',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-              )}
+              className={cn(inputClass, 'appearance-none')}
             >
               <option value="pdf">PDF</option>
               <option value="html">HTML</option>
@@ -228,7 +200,7 @@ export default function PropertiesPanel() {
           </div>
         )}
 
-        {/* Notes — all nodes */}
+        {/* Notes -- all nodes */}
         <div>
           <Label>Notes</Label>
           <textarea
@@ -236,18 +208,13 @@ export default function PropertiesPanel() {
             onChange={(e) => updateConfig('notes', e.target.value)}
             rows={3}
             placeholder="Add notes about this node..."
-            className={cn(
-              'w-full px-3 py-2 text-xs rounded-lg resize-y',
-              'bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700',
-              'text-surface-800 dark:text-surface-200 placeholder:text-surface-400',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500/30'
-            )}
+            className={cn(inputClass, 'resize-y placeholder:text-surface-400')}
           />
         </div>
       </div>
 
       {/* Delete button */}
-      <div className="px-4 py-3 border-t border-surface-200 dark:border-surface-700/50">
+      <div className="px-4 py-3 border-t border-surface-200">
         <button
           onClick={() => {
             removeNode(selectedNodeId!)
@@ -255,9 +222,9 @@ export default function PropertiesPanel() {
           }}
           className={cn(
             'w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium',
-            'bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400',
-            'hover:bg-rose-100 dark:hover:bg-rose-950/50 transition-colors',
-            'border border-rose-200 dark:border-rose-800/50'
+            'bg-rose-50 text-rose-600',
+            'hover:bg-rose-100 transition-colors',
+            'border border-rose-200'
           )}
         >
           <Trash2 className="w-3.5 h-3.5" />

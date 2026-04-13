@@ -6,13 +6,13 @@ import type { PipelineNodeData } from '../../stores/pipelineStore'
 import * as LucideIcons from 'lucide-react'
 import { CheckCircle, XCircle, Loader, Circle } from 'lucide-react'
 
-const colorMap: Record<string, { border: string; bg: string; text: string; darkBorder: string; darkBg: string }> = {
-  sky:     { border: 'border-l-sky-500',    bg: 'bg-sky-50',     text: 'text-sky-700',    darkBorder: 'dark:border-l-sky-400',    darkBg: 'dark:bg-sky-950/40' },
-  violet:  { border: 'border-l-violet-500', bg: 'bg-violet-50',  text: 'text-violet-700', darkBorder: 'dark:border-l-violet-400', darkBg: 'dark:bg-violet-950/40' },
-  amber:   { border: 'border-l-amber-500',  bg: 'bg-amber-50',   text: 'text-amber-700',  darkBorder: 'dark:border-l-amber-400',  darkBg: 'dark:bg-amber-950/40' },
-  emerald: { border: 'border-l-emerald-500', bg: 'bg-emerald-50', text: 'text-emerald-700', darkBorder: 'dark:border-l-emerald-400', darkBg: 'dark:bg-emerald-950/40' },
-  slate:   { border: 'border-l-slate-500',  bg: 'bg-slate-50',   text: 'text-slate-700',  darkBorder: 'dark:border-l-slate-400',  darkBg: 'dark:bg-slate-950/40' },
-  cyan:    { border: 'border-l-cyan-500',   bg: 'bg-cyan-50',    text: 'text-cyan-700',   darkBorder: 'dark:border-l-cyan-400',   darkBg: 'dark:bg-cyan-950/40' },
+const colorMap: Record<string, { border: string; bg: string; text: string }> = {
+  sky:     { border: 'border-l-sky-500',    bg: 'bg-sky-50',     text: 'text-sky-700' },
+  violet:  { border: 'border-l-violet-500', bg: 'bg-violet-50',  text: 'text-violet-700' },
+  amber:   { border: 'border-l-amber-500',  bg: 'bg-amber-50',   text: 'text-amber-700' },
+  emerald: { border: 'border-l-emerald-500', bg: 'bg-emerald-50', text: 'text-emerald-700' },
+  slate:   { border: 'border-l-slate-500',  bg: 'bg-slate-50',   text: 'text-slate-700' },
+  cyan:    { border: 'border-l-cyan-500',   bg: 'bg-cyan-50',    text: 'text-cyan-700' },
 }
 
 function StatusIcon({ status }: { status?: string }) {
@@ -24,7 +24,7 @@ function StatusIcon({ status }: { status?: string }) {
     case 'error':
       return <XCircle className="w-3.5 h-3.5 text-rose-500" />
     default:
-      return <Circle className="w-3.5 h-3.5 text-surface-300 dark:text-surface-600" />
+      return <Circle className="w-3.5 h-3.5 text-surface-300" />
   }
 }
 
@@ -48,11 +48,11 @@ function BaseNode({ data }: NodeProps) {
   return (
     <div
       className={cn(
-        'relative w-[180px] rounded-lg border-l-[3px] border border-surface-200 dark:border-surface-700 shadow-sm',
-        colors.border, colors.darkBorder,
-        'bg-white/90 dark:bg-surface-800/90 backdrop-blur-sm',
+        'relative w-[180px] rounded-lg border-l-[3px] border border-surface-200 shadow-sm',
+        colors.border,
+        'bg-white backdrop-blur-sm',
         'transition-shadow hover:shadow-md',
-        nodeData.status === 'running' && 'ring-2 ring-blue-400/50 ring-offset-1 dark:ring-offset-surface-900'
+        nodeData.status === 'running' && 'ring-2 ring-blue-400/50 ring-offset-1 ring-offset-white'
       )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -65,7 +65,7 @@ function BaseNode({ data }: NodeProps) {
             type="target"
             position={Position.Left}
             id={port}
-            className="!w-2.5 !h-2.5 !bg-surface-400 dark:!bg-surface-500 !border-2 !border-white dark:!border-surface-800"
+            className="!w-2.5 !h-2.5 !bg-surface-400 !border-2 !border-white"
             style={{ top: `${((i + 1) / (inputPorts.length + 1)) * 100}%` }}
           />
         ))
@@ -73,21 +73,21 @@ function BaseNode({ data }: NodeProps) {
         <Handle
           type="target"
           position={Position.Left}
-          className="!w-2.5 !h-2.5 !bg-surface-400 dark:!bg-surface-500 !border-2 !border-white dark:!border-surface-800 !opacity-0"
+          className="!w-2.5 !h-2.5 !bg-surface-400 !border-2 !border-white !opacity-0"
         />
       )}
 
       {/* Node body */}
       <div className="px-3 py-2.5 flex items-center gap-2 min-h-[52px]">
-        <div className={cn('shrink-0 p-1 rounded', colors.bg, colors.darkBg)}>
+        <div className={cn('shrink-0 p-1 rounded', colors.bg)}>
           <Icon className={cn('w-4 h-4', colors.text)} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-xs font-semibold text-surface-800 dark:text-surface-100 truncate leading-tight">
+          <div className="text-xs font-semibold text-surface-800 truncate leading-tight">
             {nodeData.label}
           </div>
           {nodeDef && (
-            <div className="text-[10px] text-surface-400 dark:text-surface-500 truncate leading-tight mt-0.5">
+            <div className="text-[10px] text-surface-400 truncate leading-tight mt-0.5">
               {_catMeta.label}
             </div>
           )}
@@ -103,7 +103,7 @@ function BaseNode({ data }: NodeProps) {
             type="source"
             position={Position.Right}
             id={port}
-            className="!w-2.5 !h-2.5 !bg-surface-400 dark:!bg-surface-500 !border-2 !border-white dark:!border-surface-800"
+            className="!w-2.5 !h-2.5 !bg-surface-400 !border-2 !border-white"
             style={{ top: `${((i + 1) / (outputPorts.length + 1)) * 100}%` }}
           />
         ))
@@ -111,31 +111,31 @@ function BaseNode({ data }: NodeProps) {
         <Handle
           type="source"
           position={Position.Right}
-          className="!w-2.5 !h-2.5 !bg-surface-400 dark:!bg-surface-500 !border-2 !border-white dark:!border-surface-800 !opacity-0"
+          className="!w-2.5 !h-2.5 !bg-surface-400 !border-2 !border-white !opacity-0"
         />
       )}
 
       {/* Tooltip on hover */}
       {hovered && nodeDef && (
-        <div className="absolute z-50 left-full ml-2 top-0 w-56 p-3 rounded-lg bg-white dark:bg-surface-800 shadow-lg border border-surface-200 dark:border-surface-700 text-xs pointer-events-none">
-          <p className="font-semibold text-surface-800 dark:text-surface-100 mb-1">{nodeDef.label}</p>
-          <p className="text-surface-500 dark:text-surface-400 mb-2 leading-relaxed">{nodeDef.description}</p>
+        <div className="absolute z-50 left-full ml-2 top-0 w-56 p-3 rounded-lg bg-white shadow-lg border border-surface-200 text-xs pointer-events-none">
+          <p className="font-semibold text-surface-800 mb-1">{nodeDef.label}</p>
+          <p className="text-surface-500 mb-2 leading-relaxed">{nodeDef.description}</p>
           {inputPorts.length > 0 && (
             <div className="mb-1">
               <span className="text-surface-400">In: </span>
-              <span className="text-surface-600 dark:text-surface-300">{inputPorts.join(', ')}</span>
+              <span className="text-surface-600">{inputPorts.join(', ')}</span>
             </div>
           )}
           {outputPorts.length > 0 && (
             <div className="mb-1">
               <span className="text-surface-400">Out: </span>
-              <span className="text-surface-600 dark:text-surface-300">{outputPorts.join(', ')}</span>
+              <span className="text-surface-600">{outputPorts.join(', ')}</span>
             </div>
           )}
           {nodeData.status === 'done' && nodeData.output != null && (
-            <div className="mt-2 pt-2 border-t border-surface-200 dark:border-surface-700">
-              <span className="text-emerald-600 dark:text-emerald-400">Output: </span>
-              <span className="text-surface-600 dark:text-surface-300 break-all">
+            <div className="mt-2 pt-2 border-t border-surface-200">
+              <span className="text-emerald-600">Output: </span>
+              <span className="text-surface-600 break-all">
                 {typeof nodeData.output === 'string'
                   ? (nodeData.output as string).slice(0, 100)
                   : JSON.stringify(nodeData.output).slice(0, 100)}

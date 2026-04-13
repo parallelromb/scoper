@@ -135,18 +135,20 @@ export default function UpdateEstimate() {
     )
   }
 
+  const inputClass = 'w-full px-3 py-2 rounded-lg border border-surface-200 bg-white text-sm text-surface-900 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400'
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
       <Link
         to={`/estimates/${id}`}
-        className="inline-flex items-center gap-1 text-sm text-surface-500 hover:text-surface-700 dark:hover:text-surface-300 mb-4"
+        className="inline-flex items-center gap-1 text-sm text-surface-500 hover:text-surface-700 mb-4"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Back to Estimate
       </Link>
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-surface-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-surface-900">
           Update Estimate
         </h1>
         <button
@@ -155,7 +157,7 @@ export default function UpdateEstimate() {
           className={cn(
             'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
             reEstimating
-              ? 'bg-agent-200 text-agent-500 cursor-wait dark:bg-agent-900/30'
+              ? 'bg-agent-100 text-agent-500 cursor-wait'
               : 'bg-agent-500 text-white hover:bg-agent-600',
           )}
         >
@@ -169,7 +171,7 @@ export default function UpdateEstimate() {
       </div>
 
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-error-50 dark:bg-error-500/10 border border-error-200 dark:border-error-500/20 text-sm text-error-600 dark:text-error-400">
+        <div className="mb-6 p-4 rounded-xl bg-error-50 border border-error-200 text-sm text-error-600">
           {error}
         </div>
       )}
@@ -178,24 +180,24 @@ export default function UpdateEstimate() {
         {/* Name & Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
+            <label className="block text-sm font-medium text-surface-700 mb-1.5">
               Name
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-surface-200 dark:border-surface-700 bg-white/80 dark:bg-surface-800/80 text-sm text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
+            <label className="block text-sm font-medium text-surface-700 mb-1.5">
               Status
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-surface-200 dark:border-surface-700 bg-white/80 dark:bg-surface-800/80 text-sm text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-400"
+              className={inputClass}
             >
               {STATUS_OPTIONS.map((s) => (
                 <option key={s} value={s}>
@@ -209,12 +211,12 @@ export default function UpdateEstimate() {
         {/* Phases */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="text-sm font-semibold text-surface-700 dark:text-surface-300">
+            <label className="text-sm font-semibold text-surface-700">
               Phases
             </label>
             <button
               onClick={addPhase}
-              className="flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+              className="flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium text-primary-500 hover:bg-primary-50 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Phase
@@ -225,7 +227,7 @@ export default function UpdateEstimate() {
               {phases.map((phase, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-lg bg-surface-50 dark:bg-surface-800/50 border border-surface-200/60 dark:border-surface-700/40"
+                  className="p-4 rounded-lg bg-surface-50 border border-surface-200/60"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -235,7 +237,7 @@ export default function UpdateEstimate() {
                           placeholder="Phase name"
                           value={phase.name}
                           onChange={(e) => updatePhase(idx, 'name', e.target.value)}
-                          className="w-full px-3 py-1.5 rounded-md border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 text-sm text-surface-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500/30"
+                          className="w-full px-3 py-1.5 rounded-md border border-surface-200 bg-white text-sm text-surface-900 focus:outline-none focus:ring-1 focus:ring-primary-500/30"
                         />
                       </div>
                       <div>
@@ -244,7 +246,7 @@ export default function UpdateEstimate() {
                           placeholder="Hours"
                           value={phase.hours || ''}
                           onChange={(e) => updatePhase(idx, 'hours', Number(e.target.value))}
-                          className="w-full px-3 py-1.5 rounded-md border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 text-sm text-surface-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500/30"
+                          className="w-full px-3 py-1.5 rounded-md border border-surface-200 bg-white text-sm text-surface-900 focus:outline-none focus:ring-1 focus:ring-primary-500/30"
                         />
                       </div>
                       <div>
@@ -253,13 +255,13 @@ export default function UpdateEstimate() {
                           placeholder="Cost"
                           value={phase.cost || ''}
                           onChange={(e) => updatePhase(idx, 'cost', Number(e.target.value))}
-                          className="w-full px-3 py-1.5 rounded-md border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 text-sm text-surface-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500/30"
+                          className="w-full px-3 py-1.5 rounded-md border border-surface-200 bg-white text-sm text-surface-900 focus:outline-none focus:ring-1 focus:ring-primary-500/30"
                         />
                       </div>
                     </div>
                     <button
                       onClick={() => removePhase(idx)}
-                      className="p-1.5 rounded-md text-surface-400 hover:text-error-500 hover:bg-error-50 dark:hover:bg-error-500/10 transition-colors"
+                      className="p-1.5 rounded-md text-surface-400 hover:text-error-500 hover:bg-error-50 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -276,16 +278,16 @@ export default function UpdateEstimate() {
 
         {/* Summary */}
         {phases.length > 0 && (
-          <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-primary-50/50 dark:bg-primary-900/10 border border-primary-200/30 dark:border-primary-800/20">
+          <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-primary-50/50 border border-primary-200/30">
             <div>
-              <div className="text-xs text-primary-600 dark:text-primary-400">Total Hours</div>
-              <div className="text-lg font-bold text-primary-700 dark:text-primary-300">
+              <div className="text-xs text-primary-600">Total Hours</div>
+              <div className="text-lg font-bold text-primary-700">
                 {phases.reduce((s, p) => s + (p.hours || 0), 0).toLocaleString()}
               </div>
             </div>
             <div>
-              <div className="text-xs text-primary-600 dark:text-primary-400">Total Cost</div>
-              <div className="text-lg font-bold text-primary-700 dark:text-primary-300">
+              <div className="text-xs text-primary-600">Total Cost</div>
+              <div className="text-lg font-bold text-primary-700">
                 ${phases.reduce((s, p) => s + (p.cost || 0), 0).toLocaleString()}
               </div>
             </div>
@@ -293,14 +295,14 @@ export default function UpdateEstimate() {
         )}
 
         {/* Save */}
-        <div className="flex justify-end pt-4 border-t border-surface-200 dark:border-surface-700">
+        <div className="flex justify-end pt-4 border-t border-surface-200">
           <button
             onClick={handleSave}
             disabled={saving || !name}
             className={cn(
               'flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors',
               saving || !name
-                ? 'bg-surface-200 text-surface-400 cursor-not-allowed dark:bg-surface-700 dark:text-surface-500'
+                ? 'bg-surface-200 text-surface-400 cursor-not-allowed'
                 : 'bg-primary-500 text-white hover:bg-primary-600',
             )}
           >

@@ -83,7 +83,7 @@ export default function QuickEstimate() {
 
   const createEstimate = useEstimateStore((s) => s.createEstimate)
 
-  // ── File handling ──
+  // -- File handling --
 
   const handleFile = useCallback(async (f: File) => {
     setFile(f)
@@ -114,7 +114,7 @@ export default function QuickEstimate() {
     [handleFile],
   )
 
-  // ── Step actions ──
+  // -- Step actions --
 
   const runAnalysis = useCallback(() => {
     if (!rawText) return
@@ -193,7 +193,7 @@ export default function QuickEstimate() {
     (step === 3 && estimate !== null) ||
     step === 4
 
-  // ── Save & Export ──
+  // -- Save & Export --
 
   const handleSave = async () => {
     if (!estimate) return
@@ -235,7 +235,7 @@ export default function QuickEstimate() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
-      <h1 className="text-2xl font-bold text-surface-900 dark:text-white mb-8">
+      <h1 className="text-2xl font-bold text-surface-900 mb-8">
         Quick Estimate
       </h1>
 
@@ -250,8 +250,8 @@ export default function QuickEstimate() {
                 i === step
                   ? 'bg-primary-500 text-white shadow-sm'
                   : i < step
-                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
-                    : 'bg-surface-100 text-surface-400 dark:bg-surface-800 dark:text-surface-500',
+                    ? 'bg-primary-100 text-primary-700'
+                    : 'bg-surface-100 text-surface-400',
               )}
               disabled={i > step}
             >
@@ -259,7 +259,7 @@ export default function QuickEstimate() {
               <span className="hidden sm:inline">{s.label}</span>
             </button>
             {i < STEPS.length - 1 && (
-              <ChevronRight className="w-4 h-4 text-surface-300 dark:text-surface-600" />
+              <ChevronRight className="w-4 h-4 text-surface-300" />
             )}
           </div>
         ))}
@@ -267,9 +267,9 @@ export default function QuickEstimate() {
 
       {/* Error banner */}
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-error-50 dark:bg-error-500/10 border border-error-200 dark:border-error-500/20 flex items-start gap-3">
+        <div className="mb-6 p-4 rounded-xl bg-error-50 border border-error-200 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-error-500 mt-0.5 shrink-0" />
-          <div className="text-sm text-error-600 dark:text-error-400">{error}</div>
+          <div className="text-sm text-error-600">{error}</div>
         </div>
       )}
 
@@ -278,7 +278,7 @@ export default function QuickEstimate() {
         {/* Step 0: Upload */}
         {step === 0 && (
           <div>
-            <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-surface-900 mb-4">
               Upload Document
             </h2>
             <div
@@ -288,8 +288,8 @@ export default function QuickEstimate() {
               className={cn(
                 'border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer',
                 dragOver
-                  ? 'border-primary-400 bg-primary-50/50 dark:bg-primary-900/10'
-                  : 'border-surface-300 dark:border-surface-600 hover:border-primary-300 dark:hover:border-primary-600',
+                  ? 'border-primary-400 bg-primary-50/50'
+                  : 'border-surface-300 hover:border-primary-300',
               )}
             >
               <input
@@ -301,7 +301,7 @@ export default function QuickEstimate() {
               />
               <label htmlFor="file-upload" className="cursor-pointer">
                 <Upload className="w-10 h-10 mx-auto mb-3 text-surface-400" />
-                <p className="text-sm text-surface-600 dark:text-surface-300">
+                <p className="text-sm text-surface-600">
                   Drag and drop a file here, or click to browse
                 </p>
                 <p className="text-xs text-surface-400 mt-1">
@@ -310,10 +310,10 @@ export default function QuickEstimate() {
               </label>
             </div>
             {file && (
-              <div className="mt-4 flex items-center gap-3 p-3 rounded-lg bg-surface-50 dark:bg-surface-800/50">
+              <div className="mt-4 flex items-center gap-3 p-3 rounded-lg bg-surface-50">
                 <FileText className="w-5 h-5 text-primary-500" />
                 <div>
-                  <div className="text-sm font-medium text-surface-900 dark:text-white">
+                  <div className="text-sm font-medium text-surface-900">
                     {file.name}
                   </div>
                   <div className="text-xs text-surface-400">
@@ -329,7 +329,7 @@ export default function QuickEstimate() {
         {/* Step 1: Analyze */}
         {step === 1 && (
           <div>
-            <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-surface-900 mb-4">
               Document Analysis
             </h2>
             {loading ? (
@@ -339,13 +339,13 @@ export default function QuickEstimate() {
             ) : analysis ? (
               <div className="space-y-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="p-3 rounded-lg bg-surface-50 dark:bg-surface-800/50">
+                  <div className="p-3 rounded-lg bg-surface-50">
                     <div className="text-xs text-surface-500 mb-1">Words</div>
-                    <div className="text-xl font-bold text-surface-900 dark:text-white">
+                    <div className="text-xl font-bold text-surface-900">
                       {analysis.wordCount.toLocaleString()}
                     </div>
                   </div>
-                  <div className="p-3 rounded-lg bg-surface-50 dark:bg-surface-800/50">
+                  <div className="p-3 rounded-lg bg-surface-50">
                     <div className="text-xs text-surface-500 mb-1">Complexity</div>
                     <div className={cn(
                       'text-xl font-bold capitalize',
@@ -356,15 +356,15 @@ export default function QuickEstimate() {
                       {analysis.complexity}
                     </div>
                   </div>
-                  <div className="p-3 rounded-lg bg-surface-50 dark:bg-surface-800/50">
+                  <div className="p-3 rounded-lg bg-surface-50">
                     <div className="text-xs text-surface-500 mb-1">Domains</div>
-                    <div className="text-xl font-bold text-surface-900 dark:text-white">
+                    <div className="text-xl font-bold text-surface-900">
                       {analysis.domains.length}
                     </div>
                   </div>
-                  <div className="p-3 rounded-lg bg-surface-50 dark:bg-surface-800/50">
+                  <div className="p-3 rounded-lg bg-surface-50">
                     <div className="text-xs text-surface-500 mb-1">Topics</div>
-                    <div className="text-xl font-bold text-surface-900 dark:text-white">
+                    <div className="text-xl font-bold text-surface-900">
                       {analysis.topics.length}
                     </div>
                   </div>
@@ -372,14 +372,14 @@ export default function QuickEstimate() {
 
                 {analysis.domains.length > 0 && (
                   <div>
-                    <div className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                    <div className="text-sm font-medium text-surface-700 mb-2">
                       Detected Domains
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {analysis.domains.map((d) => (
                         <span
                           key={d.domain}
-                          className="px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
+                          className="px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-700"
                         >
                           {d.domain} ({Math.round(d.confidence * 100)}%)
                         </span>
@@ -390,14 +390,14 @@ export default function QuickEstimate() {
 
                 {analysis.topics.length > 0 && (
                   <div>
-                    <div className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+                    <div className="text-sm font-medium text-surface-700 mb-2">
                       Topics
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {analysis.topics.map((t) => (
                         <span
                           key={t.topic}
-                          className="px-3 py-1 rounded-full text-xs font-medium bg-agent-100 text-agent-700 dark:bg-agent-900/30 dark:text-agent-300"
+                          className="px-3 py-1 rounded-full text-xs font-medium bg-agent-100 text-agent-700"
                         >
                           {t.topic.replace(/_/g, ' ')}
                         </span>
@@ -412,7 +412,7 @@ export default function QuickEstimate() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-surface-500 dark:text-surface-400 text-sm mb-4">
+                <p className="text-surface-500 text-sm mb-4">
                   Click Next to analyze the uploaded document
                 </p>
               </div>
@@ -423,7 +423,7 @@ export default function QuickEstimate() {
         {/* Step 2: Extract */}
         {step === 2 && (
           <div>
-            <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-surface-900 mb-4">
               Extract Requirements
             </h2>
             {loading ? (
@@ -438,14 +438,14 @@ export default function QuickEstimate() {
                   if (arr.length === 0) return null
                   return (
                     <div key={key}>
-                      <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 capitalize mb-2">
+                      <h3 className="text-sm font-semibold text-surface-700 capitalize mb-2">
                         {key.replace(/_/g, ' ')} ({arr.length})
                       </h3>
                       <ul className="space-y-1">
                         {arr.map((item: string, i: number) => (
                           <li
                             key={i}
-                            className="text-sm text-surface-600 dark:text-surface-400 pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-agent-400"
+                            className="text-sm text-surface-600 pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-agent-400"
                           >
                             {item}
                           </li>
@@ -458,7 +458,7 @@ export default function QuickEstimate() {
             ) : (
               <div className="text-center py-12">
                 <Brain className="w-10 h-10 mx-auto mb-3 text-surface-400" />
-                <p className="text-surface-500 dark:text-surface-400 text-sm">
+                <p className="text-surface-500 text-sm">
                   Click Next to extract requirements using ARIA agent
                 </p>
               </div>
@@ -469,7 +469,7 @@ export default function QuickEstimate() {
         {/* Step 3: Estimate */}
         {step === 3 && (
           <div>
-            <h2 className="text-lg font-semibold text-surface-900 dark:text-white mb-4">
+            <h2 className="text-lg font-semibold text-surface-900 mb-4">
               Generate Estimate
             </h2>
             {loading ? (
@@ -480,7 +480,7 @@ export default function QuickEstimate() {
             ) : estimate ? (
               <div className="text-center py-8">
                 <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-success-500" />
-                <p className="text-surface-700 dark:text-surface-300 font-medium">
+                <p className="text-surface-700 font-medium">
                   Estimate generated successfully
                 </p>
                 <p className="text-sm text-surface-500 mt-1">
@@ -490,7 +490,7 @@ export default function QuickEstimate() {
             ) : (
               <div className="text-center py-12">
                 <Calculator className="w-10 h-10 mx-auto mb-3 text-surface-400" />
-                <p className="text-surface-500 dark:text-surface-400 text-sm">
+                <p className="text-surface-500 text-sm">
                   Click Next to generate estimate using NOVA agent
                 </p>
               </div>
@@ -501,33 +501,33 @@ export default function QuickEstimate() {
         {/* Step 4: Results */}
         {step === 4 && estimate && (
           <div className="space-y-6">
-            <h2 className="text-lg font-semibold text-surface-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-surface-900">
               {estimate.project_name || 'Estimate Results'}
             </h2>
 
             {/* Summary cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-4 rounded-xl bg-primary-50 dark:bg-primary-900/20 border border-primary-200/50 dark:border-primary-800/30">
-                <div className="text-xs text-primary-600 dark:text-primary-400 mb-1">Total Hours</div>
-                <div className="text-2xl font-bold text-primary-700 dark:text-primary-300">
+              <div className="p-4 rounded-xl bg-primary-50 border border-primary-200/50">
+                <div className="text-xs text-primary-600 mb-1">Total Hours</div>
+                <div className="text-2xl font-bold text-primary-700">
                   {estimate.total_hours?.toLocaleString()}
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-success-50 dark:bg-success-500/10 border border-success-200/50 dark:border-success-500/20">
-                <div className="text-xs text-success-600 dark:text-success-400 mb-1">Total Cost</div>
-                <div className="text-2xl font-bold text-success-600 dark:text-success-400">
+              <div className="p-4 rounded-xl bg-success-50 border border-success-100">
+                <div className="text-xs text-success-600 mb-1">Total Cost</div>
+                <div className="text-2xl font-bold text-success-600">
                   ${estimate.total_cost?.toLocaleString()}
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-agent-50 dark:bg-agent-500/10 border border-agent-200/50 dark:border-agent-500/20">
-                <div className="text-xs text-agent-600 dark:text-agent-400 mb-1">Confidence</div>
-                <div className="text-2xl font-bold text-agent-600 dark:text-agent-400">
+              <div className="p-4 rounded-xl bg-agent-50 border border-agent-200/50">
+                <div className="text-xs text-agent-600 mb-1">Confidence</div>
+                <div className="text-2xl font-bold text-agent-600">
                   {estimate.confidence}%
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-tool-50 dark:bg-tool-500/10 border border-tool-200/50 dark:border-tool-500/20">
-                <div className="text-xs text-tool-600 dark:text-tool-400 mb-1">Phases</div>
-                <div className="text-2xl font-bold text-tool-600 dark:text-tool-400">
+              <div className="p-4 rounded-xl bg-tool-50 border border-tool-200/50">
+                <div className="text-xs text-tool-600 mb-1">Phases</div>
+                <div className="text-2xl font-bold text-tool-600">
                   {estimate.phases?.length || 0}
                 </div>
               </div>
@@ -536,13 +536,13 @@ export default function QuickEstimate() {
             {/* Phase breakdown */}
             {estimate.phases && estimate.phases.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3">
+                <h3 className="text-sm font-semibold text-surface-700 mb-3">
                   Phase Breakdown
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-surface-200 dark:border-surface-700">
+                      <tr className="border-b border-surface-200">
                         <th className="text-left py-2 text-surface-500 font-medium">Phase</th>
                         <th className="text-right py-2 text-surface-500 font-medium">Hours</th>
                         <th className="text-right py-2 text-surface-500 font-medium">Cost</th>
@@ -551,16 +551,16 @@ export default function QuickEstimate() {
                     </thead>
                     <tbody>
                       {estimate.phases.map((p, i) => (
-                        <tr key={i} className="border-b border-surface-100 dark:border-surface-800">
-                          <td className="py-2 text-surface-900 dark:text-white">
+                        <tr key={i} className="border-b border-surface-100">
+                          <td className="py-2 text-surface-900">
                             {p.name}
                             {p.description && (
                               <div className="text-xs text-surface-400 mt-0.5">{p.description}</div>
                             )}
                           </td>
-                          <td className="py-2 text-right text-surface-700 dark:text-surface-300">{p.hours}</td>
-                          <td className="py-2 text-right text-surface-700 dark:text-surface-300">${p.cost?.toLocaleString()}</td>
-                          <td className="py-2 text-right text-surface-700 dark:text-surface-300">{p.resources}</td>
+                          <td className="py-2 text-right text-surface-700">{p.hours}</td>
+                          <td className="py-2 text-right text-surface-700">${p.cost?.toLocaleString()}</td>
+                          <td className="py-2 text-right text-surface-700">{p.resources}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -572,13 +572,13 @@ export default function QuickEstimate() {
             {/* Cost breakdown */}
             {estimate.costs && estimate.costs.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3">
+                <h3 className="text-sm font-semibold text-surface-700 mb-3">
                   Cost Breakdown
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-surface-200 dark:border-surface-700">
+                      <tr className="border-b border-surface-200">
                         <th className="text-left py-2 text-surface-500 font-medium">Category</th>
                         <th className="text-right py-2 text-surface-500 font-medium">Amount</th>
                         <th className="text-left py-2 text-surface-500 font-medium">Description</th>
@@ -586,12 +586,12 @@ export default function QuickEstimate() {
                     </thead>
                     <tbody>
                       {estimate.costs.map((c, i) => (
-                        <tr key={i} className="border-b border-surface-100 dark:border-surface-800">
-                          <td className="py-2 text-surface-900 dark:text-white">{c.category}</td>
-                          <td className="py-2 text-right text-surface-700 dark:text-surface-300">
+                        <tr key={i} className="border-b border-surface-100">
+                          <td className="py-2 text-surface-900">{c.category}</td>
+                          <td className="py-2 text-right text-surface-700">
                             ${c.amount?.toLocaleString()}
                           </td>
-                          <td className="py-2 text-surface-500 dark:text-surface-400">{c.description}</td>
+                          <td className="py-2 text-surface-500">{c.description}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -603,12 +603,12 @@ export default function QuickEstimate() {
             {/* Risks */}
             {estimate.risks && estimate.risks.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3">
+                <h3 className="text-sm font-semibold text-surface-700 mb-3">
                   Risks
                 </h3>
                 <div className="space-y-2">
                   {estimate.risks.map((r, i) => (
-                    <div key={i} className="p-3 rounded-lg bg-surface-50 dark:bg-surface-800/50">
+                    <div key={i} className="p-3 rounded-lg bg-surface-50">
                       <div className="flex items-center gap-2 mb-1">
                         <AlertTriangle className={cn(
                           'w-4 h-4',
@@ -616,22 +616,22 @@ export default function QuickEstimate() {
                           r.impact === 'medium' ? 'text-tool-500' :
                           'text-surface-400',
                         )} />
-                        <span className="text-sm font-medium text-surface-900 dark:text-white">
+                        <span className="text-sm font-medium text-surface-900">
                           {r.risk}
                         </span>
                         <span className={cn(
                           'ml-auto text-xs px-2 py-0.5 rounded-full',
                           r.impact === 'high'
-                            ? 'bg-error-100 text-error-600 dark:bg-error-500/20 dark:text-error-400'
+                            ? 'bg-error-100 text-error-600'
                             : r.impact === 'medium'
-                              ? 'bg-tool-100 text-tool-600 dark:bg-tool-500/20 dark:text-tool-400'
-                              : 'bg-surface-100 text-surface-500 dark:bg-surface-700 dark:text-surface-400',
+                              ? 'bg-tool-100 text-tool-600'
+                              : 'bg-surface-100 text-surface-500',
                         )}>
                           {r.impact}
                         </span>
                       </div>
                       {r.mitigation && (
-                        <p className="text-xs text-surface-500 dark:text-surface-400 pl-6">
+                        <p className="text-xs text-surface-500 pl-6">
                           Mitigation: {r.mitigation}
                         </p>
                       )}
@@ -642,7 +642,7 @@ export default function QuickEstimate() {
             )}
 
             {/* Export buttons */}
-            <div className="flex gap-3 pt-4 border-t border-surface-200 dark:border-surface-700">
+            <div className="flex gap-3 pt-4 border-t border-surface-200">
               <button
                 onClick={handleSave}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors text-sm font-medium"
@@ -652,7 +652,7 @@ export default function QuickEstimate() {
               </button>
               <button
                 onClick={handleDownload}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-surface-300 dark:border-surface-600 text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-surface-300 text-surface-700 hover:bg-surface-50 transition-colors text-sm font-medium"
               >
                 <Download className="w-4 h-4" />
                 Download JSON
@@ -672,7 +672,7 @@ export default function QuickEstimate() {
               'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               step === 0
                 ? 'text-surface-300 cursor-not-allowed'
-                : 'text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800',
+                : 'text-surface-600 hover:bg-surface-100',
             )}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -685,7 +685,7 @@ export default function QuickEstimate() {
               'flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-colors',
               canNext && !loading
                 ? 'bg-primary-500 text-white hover:bg-primary-600'
-                : 'bg-surface-200 text-surface-400 cursor-not-allowed dark:bg-surface-700 dark:text-surface-500',
+                : 'bg-surface-200 text-surface-400 cursor-not-allowed',
             )}
           >
             {loading ? (
