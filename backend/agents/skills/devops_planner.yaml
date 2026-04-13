@@ -1,0 +1,50 @@
+id: devops_planner
+name: DevOps Planner
+description: Plan CI/CD pipelines, infrastructure requirements, and deployment strategy
+input_schema:
+  type: object
+  properties:
+    architecture:
+      type: object
+      description: System architecture
+    requirements:
+      type: array
+      description: Non-functional requirements
+    scale:
+      type: string
+      enum: [small, medium, large, enterprise]
+  required: [architecture]
+output_schema:
+  type: object
+  properties:
+    ci_cd_pipeline:
+      type: object
+      properties:
+        tool: { type: string }
+        stages: { type: array }
+    infrastructure:
+      type: object
+      properties:
+        provider: { type: string }
+        resources: { type: array }
+        monthly_cost: { type: number }
+    deployment_strategy:
+      type: object
+    monitoring:
+      type: object
+prompt_template: |
+  Plan the DevOps infrastructure and CI/CD pipeline.
+  Consider:
+  - CI/CD tool selection and pipeline stages
+  - Infrastructure sizing and cost
+  - Deployment strategy (zero-downtime)
+  - Monitoring and alerting setup
+  - Environment management
+  - Disaster recovery
+
+  Architecture:
+  {architecture}
+
+  Scale: {scale}
+
+  Respond with ONLY valid JSON matching the output schema.

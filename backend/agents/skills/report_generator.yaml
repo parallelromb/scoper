@@ -1,0 +1,54 @@
+id: report_generator
+name: Report Generator
+description: Compile outputs from all agents into a final comprehensive estimation report
+input_schema:
+  type: object
+  properties:
+    agent_outputs:
+      type: object
+      description: Map of agent_id to their output JSON
+    project_name:
+      type: string
+    generated_at:
+      type: string
+  required: [agent_outputs]
+output_schema:
+  type: object
+  properties:
+    executive_summary:
+      type: string
+    requirements_summary:
+      type: object
+    estimation_summary:
+      type: object
+    architecture_summary:
+      type: object
+    security_summary:
+      type: object
+    schedule_summary:
+      type: object
+    risk_summary:
+      type: object
+    recommendations:
+      type: array
+    total_cost:
+      type: number
+    total_effort_hours:
+      type: number
+    confidence_score:
+      type: number
+prompt_template: |
+  Compile a comprehensive estimation report from all agent outputs.
+  Create:
+  - Executive summary (3-5 sentences)
+  - Key findings from each agent
+  - Consolidated risk assessment
+  - Top recommendations
+  - Final cost and timeline summary
+
+  Agent outputs:
+  {agent_outputs}
+
+  Project: {project_name}
+
+  Respond with ONLY valid JSON matching the output schema.

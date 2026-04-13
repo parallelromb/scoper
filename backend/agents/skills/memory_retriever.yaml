@@ -1,0 +1,48 @@
+id: memory_retriever
+name: Memory Retriever
+description: Search and retrieve relevant memories from past estimations and agent runs
+input_schema:
+  type: object
+  properties:
+    agent_id:
+      type: string
+      description: Agent to retrieve memories for
+    query:
+      type: string
+      description: Search query for relevant memories
+    layers:
+      type: array
+      items:
+        type: string
+        enum: [working, short_term, long_term, semantic, episodic]
+      description: Memory layers to search
+    limit:
+      type: integer
+      default: 10
+  required: [agent_id]
+output_schema:
+  type: object
+  properties:
+    memories:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: integer }
+          content: { type: string }
+          layer: { type: string }
+          importance: { type: number }
+          effective_importance: { type: number }
+          created_at: { type: string }
+          age_days: { type: number }
+    total_found:
+      type: integer
+prompt_template: |
+  Retrieve relevant memories for the agent from the specified layers.
+  Apply Ebbinghaus decay to importance scores.
+  Sort by effective importance (post-decay) descending.
+  Filter out memories below 0.1 threshold.
+
+  Agent: {agent_id}
+  Query: {query}
+  Layers: {layers}

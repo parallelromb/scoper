@@ -1,0 +1,51 @@
+id: document_parser
+name: Document Parser
+description: Parse PDF, DOCX, and TXT files into structured text sections with metadata
+input_schema:
+  type: object
+  properties:
+    file_path:
+      type: string
+      description: Path to the document file
+    file_type:
+      type: string
+      enum: [pdf, docx, txt, md]
+      description: Type of document
+    content:
+      type: string
+      description: Raw text content (alternative to file_path)
+  required: []
+output_schema:
+  type: object
+  properties:
+    sections:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          content:
+            type: string
+          level:
+            type: integer
+    metadata:
+      type: object
+      properties:
+        word_count:
+          type: integer
+        page_count:
+          type: integer
+        format:
+          type: string
+    raw_text:
+      type: string
+prompt_template: |
+  Parse the following document content into structured sections.
+  Identify headings, subheadings, and body text.
+  Extract metadata including word count and structure.
+
+  Document content:
+  {content}
+
+  Respond with ONLY valid JSON matching the output schema.

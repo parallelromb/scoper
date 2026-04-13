@@ -1,0 +1,48 @@
+id: integration_mapper
+name: Integration Mapper
+description: Map integration points, data flows, and third-party dependencies
+input_schema:
+  type: object
+  properties:
+    requirements:
+      type: array
+      description: Project requirements mentioning integrations
+    architecture:
+      type: object
+      description: System architecture
+  required: [requirements]
+output_schema:
+  type: object
+  properties:
+    integrations:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: string }
+          source: { type: string }
+          target: { type: string }
+          protocol: { type: string }
+          data_format: { type: string }
+          frequency: { type: string }
+          complexity: { type: string }
+    data_flows:
+      type: array
+    dependency_graph:
+      type: object
+prompt_template: |
+  Map all integration points from the requirements and architecture.
+  For each integration identify:
+  - Source and target systems
+  - Protocol (REST, GraphQL, gRPC, WebSocket, file transfer)
+  - Data format and volume
+  - Frequency (real-time, batch, on-demand)
+  - Complexity and effort
+
+  Requirements:
+  {requirements}
+
+  Architecture:
+  {architecture}
+
+  Respond with ONLY valid JSON matching the output schema.

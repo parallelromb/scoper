@@ -1,0 +1,43 @@
+id: requirement_extractor
+name: Requirement Extractor
+description: Extract functional, non-functional, and technical requirements from parsed document text
+input_schema:
+  type: object
+  properties:
+    text:
+      type: string
+      description: Parsed document text
+    context:
+      type: string
+      description: Additional context about the project
+  required: [text]
+output_schema:
+  type: object
+  properties:
+    functional:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: string }
+          title: { type: string }
+          description: { type: string }
+          priority: { type: string }
+    non_functional:
+      type: array
+    constraints:
+      type: array
+    assumptions:
+      type: array
+prompt_template: |
+  Extract all requirements from the following text.
+  Categorize each as functional, non-functional, or constraint.
+  Assign priority (high/medium/low) based on business impact.
+
+  Text:
+  {text}
+
+  Context:
+  {context}
+
+  Respond with ONLY valid JSON matching the output schema.

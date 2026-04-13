@@ -1,0 +1,52 @@
+id: cost_estimator
+name: Cost Estimator
+description: Apply rate cards to effort estimates to produce cost breakdowns by role and phase
+input_schema:
+  type: object
+  properties:
+    effort_breakdown:
+      type: array
+      description: Effort hours by role and phase
+    rate_card:
+      type: object
+      description: Hourly rates by role (optional, uses defaults)
+    currency:
+      type: string
+      default: USD
+  required: [effort_breakdown]
+output_schema:
+  type: object
+  properties:
+    cost_by_role:
+      type: array
+      items:
+        type: object
+        properties:
+          role: { type: string }
+          hours: { type: number }
+          rate: { type: number }
+          cost: { type: number }
+    cost_by_phase:
+      type: array
+    total_cost:
+      type: number
+    currency:
+      type: string
+prompt_template: |
+  Calculate costs by applying rate cards to the effort breakdown.
+  Use default rates if no rate card provided:
+  - Senior Developer: $150/hr
+  - Developer: $100/hr
+  - QA Engineer: $90/hr
+  - DevOps Engineer: $130/hr
+  - Project Manager: $120/hr
+  - UX Designer: $110/hr
+  - Architect: $160/hr
+
+  Effort breakdown:
+  {effort_breakdown}
+
+  Rate card:
+  {rate_card}
+
+  Respond with ONLY valid JSON matching the output schema.

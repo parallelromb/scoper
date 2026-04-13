@@ -1,0 +1,48 @@
+id: risk_scorer
+name: Risk Scorer
+description: Score project risks by likelihood times impact, with mitigation recommendations
+input_schema:
+  type: object
+  properties:
+    requirements:
+      type: array
+      description: Project requirements
+    architecture:
+      type: object
+      description: Proposed architecture
+    context:
+      type: string
+  required: [requirements]
+output_schema:
+  type: object
+  properties:
+    risks:
+      type: array
+      items:
+        type: object
+        properties:
+          id: { type: string }
+          category: { type: string }
+          description: { type: string }
+          likelihood: { type: number }
+          impact: { type: number }
+          score: { type: number }
+          mitigation: { type: string }
+          cost_impact_hours: { type: number }
+    overall_risk_score:
+      type: number
+prompt_template: |
+  Identify and score project risks. For each risk:
+  - Likelihood: 1 (unlikely) to 5 (certain)
+  - Impact: 1 (negligible) to 5 (catastrophic)
+  - Score = Likelihood * Impact
+
+  Categories: technical, schedule, resource, scope, external, security
+
+  Requirements:
+  {requirements}
+
+  Architecture:
+  {architecture}
+
+  Respond with ONLY valid JSON matching the output schema.

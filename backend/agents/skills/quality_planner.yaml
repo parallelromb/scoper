@@ -1,0 +1,47 @@
+id: quality_planner
+name: Quality Planner
+description: Define test strategy, quality gates, and acceptance criteria
+input_schema:
+  type: object
+  properties:
+    requirements:
+      type: array
+      description: Requirements to create test plans for
+    architecture:
+      type: object
+      description: System architecture for integration test planning
+    complexity:
+      type: string
+      enum: [low, medium, high]
+  required: [requirements]
+output_schema:
+  type: object
+  properties:
+    test_plan:
+      type: object
+      properties:
+        unit_tests: { type: object }
+        integration_tests: { type: object }
+        e2e_tests: { type: object }
+        performance_tests: { type: object }
+    acceptance_criteria:
+      type: array
+    quality_gates:
+      type: array
+    total_effort_hours:
+      type: number
+prompt_template: |
+  Create a comprehensive test strategy for the project.
+  Define:
+  - Test levels and coverage targets
+  - Acceptance criteria per requirement
+  - Quality gates per phase
+  - Test automation recommendations
+  - Performance benchmarks
+
+  Requirements:
+  {requirements}
+
+  Complexity: {complexity}
+
+  Respond with ONLY valid JSON matching the output schema.

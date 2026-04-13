@@ -1,0 +1,54 @@
+id: security_scanner
+name: Security Scanner
+description: Check project specifications against OWASP Top 10 and common security anti-patterns
+input_schema:
+  type: object
+  properties:
+    requirements:
+      type: array
+      description: Project requirements
+    architecture:
+      type: object
+      description: System architecture
+    tech_stack:
+      type: object
+      description: Technology stack
+  required: [requirements]
+output_schema:
+  type: object
+  properties:
+    owasp_findings:
+      type: array
+      items:
+        type: object
+        properties:
+          owasp_id: { type: string }
+          name: { type: string }
+          risk_level: { type: string }
+          applicable: { type: boolean }
+          details: { type: string }
+          remediation: { type: string }
+    additional_findings:
+      type: array
+    risk_score:
+      type: number
+prompt_template: |
+  Scan the project specifications against OWASP Top 10 (2021):
+  A01: Broken Access Control
+  A02: Cryptographic Failures
+  A03: Injection
+  A04: Insecure Design
+  A05: Security Misconfiguration
+  A06: Vulnerable Components
+  A07: Auth Failures
+  A08: Software/Data Integrity Failures
+  A09: Logging/Monitoring Failures
+  A10: SSRF
+
+  Requirements:
+  {requirements}
+
+  Architecture:
+  {architecture}
+
+  Respond with ONLY valid JSON matching the output schema.

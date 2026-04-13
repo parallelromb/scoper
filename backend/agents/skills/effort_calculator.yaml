@@ -1,0 +1,42 @@
+id: effort_calculator
+name: Effort Calculator
+description: Calculate effort hours from structured requirements using three-point estimation
+input_schema:
+  type: object
+  properties:
+    requirements:
+      type: array
+      description: List of structured requirements
+    complexity:
+      type: string
+      enum: [low, medium, high]
+    team_size:
+      type: integer
+  required: [requirements]
+output_schema:
+  type: object
+  properties:
+    line_items:
+      type: array
+      items:
+        type: object
+        properties:
+          requirement_id: { type: string }
+          best_case_hours: { type: number }
+          likely_hours: { type: number }
+          worst_case_hours: { type: number }
+          expected_hours: { type: number }
+    total_hours:
+      type: number
+    confidence:
+      type: number
+prompt_template: |
+  Calculate effort hours for each requirement using three-point estimation (PERT).
+  Expected = (Best + 4*Likely + Worst) / 6
+
+  Requirements:
+  {requirements}
+
+  Overall complexity: {complexity}
+
+  Respond with ONLY valid JSON matching the output schema.

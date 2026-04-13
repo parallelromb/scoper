@@ -1,0 +1,50 @@
+id: schedule_builder
+name: Schedule Builder
+description: Build Gantt-style schedule with phases, milestones, dependencies, and critical path
+input_schema:
+  type: object
+  properties:
+    phases:
+      type: array
+      description: Phases with effort hours
+    resources:
+      type: array
+      description: Available resources
+    constraints:
+      type: object
+      description: Timeline constraints (deadlines, dependencies)
+  required: [phases]
+output_schema:
+  type: object
+  properties:
+    gantt:
+      type: array
+      items:
+        type: object
+        properties:
+          task_id: { type: string }
+          name: { type: string }
+          start_week: { type: integer }
+          end_week: { type: integer }
+          dependencies: { type: array }
+          resource: { type: string }
+    milestones:
+      type: array
+    critical_path:
+      type: array
+    total_weeks:
+      type: integer
+prompt_template: |
+  Build a project schedule from the given phases and resources.
+  - Convert effort hours to calendar weeks (assume 6 productive hours/day, 5 days/week = 30 hrs/week per person)
+  - Identify dependencies and critical path
+  - Place milestones at phase boundaries
+  - Add 15-20% buffer for medium complexity, 25% for high
+
+  Phases:
+  {phases}
+
+  Resources:
+  {resources}
+
+  Respond with ONLY valid JSON matching the output schema.

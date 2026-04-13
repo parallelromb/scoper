@@ -1,0 +1,48 @@
+id: architecture_reviewer
+name: Architecture Reviewer
+description: Evaluate technical architecture decisions, identify anti-patterns, and recommend improvements
+input_schema:
+  type: object
+  properties:
+    architecture:
+      type: object
+      description: Proposed architecture
+    requirements:
+      type: array
+      description: Requirements to validate against
+    scale:
+      type: string
+      enum: [small, medium, large, enterprise]
+  required: [requirements]
+output_schema:
+  type: object
+  properties:
+    evaluation:
+      type: object
+      properties:
+        score: { type: number }
+        strengths: { type: array }
+        weaknesses: { type: array }
+        anti_patterns: { type: array }
+    recommendations:
+      type: array
+    alternative_approaches:
+      type: array
+prompt_template: |
+  Evaluate the proposed architecture against the requirements.
+  Check for:
+  - Scalability bottlenecks
+  - Single points of failure
+  - Anti-patterns (god service, chatty APIs, shared databases)
+  - Technology fit for the project scale
+  - Operational complexity
+
+  Architecture:
+  {architecture}
+
+  Requirements:
+  {requirements}
+
+  Scale: {scale}
+
+  Respond with ONLY valid JSON matching the output schema.
