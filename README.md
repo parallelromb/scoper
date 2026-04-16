@@ -1,6 +1,6 @@
-# ARIES v2.0
+# Scoper
 
-**AI Resource & Intelligent Estimation System**
+**AI-powered project scoping — turn documents into estimates in minutes**
 
 > Turn a BRD into a complete project estimate in under 2 minutes — powered by 9 AI agents working in a visual pipeline.
 
@@ -8,15 +8,15 @@
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-green.svg)](https://python.org)
 [![Node 18+](https://img.shields.io/badge/Node-18%2B-green.svg)](https://nodejs.org)
 
-![ARIES Pipeline Builder](docs/demo.gif)
+![Scoper Pipeline Builder](docs/demo.gif)
 
 ---
 
-## What is ARIES?
+## What is Scoper?
 
 Enterprise software teams spend **2–4 weeks** manually estimating projects — reading BRDs, cross-referencing history, applying rate cards, building schedules, writing reports. It's slow, inconsistent, and error-prone.
 
-**ARIES** runs 9 specialized AI agents in a configurable drag-and-drop pipeline. Upload a document, choose your workflow, and get a complete estimate (phases, effort hours, costs, resources, schedule, risks) — automatically.
+**Scoper** runs 9 specialized AI agents in a configurable drag-and-drop pipeline. Upload a document, choose your workflow, and get a complete estimate (phases, effort hours, costs, resources, schedule, risks) — automatically.
 
 ### Key Features
 
@@ -45,8 +45,8 @@ Enterprise software teams spend **2–4 weeks** manually estimating projects —
 Use any of: OpenAI, Anthropic, or GitHub Models.
 
 ```bash
-git clone https://github.com/parallelromb/aries-v2.git
-cd aries-v2
+git clone https://github.com/parallelromb/scoper.git
+cd scoper
 
 # Copy and configure environment
 cp .env.example .env
@@ -82,9 +82,9 @@ ollama pull gemma3:4b     # Lightweight — runs on 4 GB+
 # 3. Start Ollama (runs on port 11434)
 ollama serve
 
-# 4. Clone and configure ARIES
-git clone https://github.com/parallelromb/aries-v2.git
-cd aries-v2
+# 4. Clone and configure Scoper
+git clone https://github.com/parallelromb/scoper.git
+cd scoper
 cp .env.example .env
 # Edit .env:
 #   LLM_PROVIDER=ollama
@@ -103,7 +103,7 @@ python run.py
 | `gemma3:12b` | 8 GB | Good balance — most laptops and small VMs |
 | `gemma3:4b` | 4 GB | Quick iteration — constrained environments |
 
-ARIES is platform-agnostic: macOS, Linux, Windows (WSL2), or any cloud VM.
+Scoper is platform-agnostic: macOS, Linux, Windows (WSL2), or any cloud VM.
 
 ---
 
@@ -217,7 +217,7 @@ python run.py                   # serves SPA + API on port 8000
 ## Project Structure
 
 ```
-aries-v2/
+scoper/
 ├── frontend/src/              # React app
 │   ├── routes/                # 7 page components
 │   ├── components/            # UI + pipeline + dashboard
@@ -257,7 +257,7 @@ aries-v2/
 
 ## Smara Integration
 
-ARIES uses [Smara](https://github.com/parallelromb/smara) for persistent cross-session memory. Smara provides the memory API that powers the 5-layer memory system, enabling agents to learn from past estimates and improve over time.
+Scoper uses [Smara](https://github.com/parallelromb/smara) for persistent cross-session memory. Smara provides the memory API that powers the 5-layer memory system, enabling agents to learn from past estimates and improve over time.
 
 ---
 
@@ -267,4 +267,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-Built with Claude Code | ARIES v2.0 | MIT License
+Built with Claude Code | Scoper | MIT License

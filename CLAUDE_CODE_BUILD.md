@@ -1,4 +1,4 @@
-# ARIES v2.0 — Claude Code Build Specification
+# Scoper — Claude Code Build Specification
 
 > Complete build instruction file for Claude Code. Run each phase sequentially. Confirm `python run.py` boots clean after each phase before proceeding.
 
@@ -61,14 +61,14 @@ Core tables — auto-created if not exist:
 - `artifacts` (id, run_id, agent_id, type, content JSON, created_at)
 
 ### 1.5 Authentication
-- `POST /api/auth/login` — accepts `{ username }`, auto-registers, sets `aries_session` cookie (HTTPOnly, 24h TTL, SameSite=Lax)
+- `POST /api/auth/login` — accepts `{ username }`, auto-registers, sets `scoper_session` cookie (HTTPOnly, 24h TTL, SameSite=Lax)
 - `POST /api/auth/logout` — clears cookie
 - `GET /api/auth/me` — returns current user
 - `AuthMiddleware` validates all `/api/*` except `/api/auth/login`
 - RBAC roles: admin, estimator, viewer (stored in users table)
 
 ### 1.6 AppShell Layout
-- Top navbar: ARIES logo, nav links, theme toggle (sun/moon), user menu
+- Top navbar: Scoper logo, nav links, theme toggle (sun/moon), user menu
 - Collapsible sidebar: same nav links with icons
 - Content area with `<Outlet />`
 - Zustand `authStore`: user, login(), logout(), checkSession()
@@ -415,4 +415,4 @@ SMARA_API_KEY=
 
 ---
 
-*Build specification generated with Claude Code — ARIES v2.0 — MIT License*
+*Build specification generated with Claude Code — Scoper — MIT License*

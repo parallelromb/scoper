@@ -62,7 +62,7 @@ function PipelineInner() {
     (event: React.DragEvent) => {
       event.preventDefault()
 
-      const type = event.dataTransfer.getData('application/aries-node-type')
+      const type = event.dataTransfer.getData('application/scoper-node-type')
       if (!type) return
 
       const nodeDef = getNodeDef(type)

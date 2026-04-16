@@ -13,13 +13,13 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
 
   toggle: () => {
     const next = get().theme === 'dark' ? 'light' : 'dark'
-    localStorage.setItem('aries-theme', next)
+    localStorage.setItem('scoper-theme', next)
     document.documentElement.classList.toggle('dark', next === 'dark')
     set({ theme: next })
   },
 
   init: () => {
-    const stored = localStorage.getItem('aries-theme') as Theme | null
+    const stored = localStorage.getItem('scoper-theme') as Theme | null
     const theme = stored ?? 'light'
     document.documentElement.classList.toggle('dark', theme === 'dark')
     set({ theme })

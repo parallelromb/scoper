@@ -263,7 +263,7 @@ const definitions: NodeDefinition[] = [
     category: 'output',
     subtype: 'dashboard',
     label: 'Dashboard',
-    description: 'Push results to the ARIES dashboard for visualization',
+    description: 'Push results to the Scoper dashboard for visualization',
     icon: 'LayoutDashboard',
     color: 'slate',
     defaultConfig: { autoRefresh: true },

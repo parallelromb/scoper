@@ -52,7 +52,7 @@ export default function Home() {
     <div className="max-w-5xl mx-auto px-6 py-12">
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold tracking-tight text-surface-900">
-          Welcome to ARIES
+          Welcome to Scoper
         </h1>
         <p className="mt-3 text-surface-500">
           Choose how you want to create your estimate

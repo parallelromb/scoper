@@ -32,7 +32,7 @@ function DraggableNodeItem({ node }: { node: NodeDefinition }) {
   const Icon = getIcon(node.icon)
 
   function onDragStart(e: React.DragEvent) {
-    e.dataTransfer.setData('application/aries-node-type', node.id)
+    e.dataTransfer.setData('application/scoper-node-type', node.id)
     e.dataTransfer.effectAllowed = 'move'
   }
 

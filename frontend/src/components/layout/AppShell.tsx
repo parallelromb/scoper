@@ -65,7 +65,7 @@ export default function AppShell() {
         <NavLink to="/" className="flex items-center gap-2 no-underline shrink-0">
           <Sparkles className="w-5 h-5 text-primary-500" />
           <span className="text-lg font-bold tracking-tight text-surface-900">
-            ARIES
+            Scoper
           </span>
         </NavLink>
 

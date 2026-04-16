@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="ARIES v2.0", version="2.0.0", lifespan=lifespan)
+app = FastAPI(title="Scoper", version="2.0.0", lifespan=lifespan)
 
 # CORS — allow all for dev
 app.add_middleware(
@@ -67,5 +67,5 @@ async def spa_catch_all(request: Request, full_path: str):
 
     return JSONResponse(
         status_code=200,
-        content={"message": "ARIES v2.0 — Frontend not built yet. API is running."},
+        content={"message": "Scoper — Frontend not built yet. API is running."},
     )

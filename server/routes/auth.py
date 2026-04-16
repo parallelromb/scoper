@@ -26,7 +26,7 @@ def _clean_expired():
 
 async def get_current_user(request: Request) -> dict:
     """Dependency: extract and validate session from cookie."""
-    token = request.cookies.get("aries_session")
+    token = request.cookies.get("scoper_session")
     if not token or token not in sessions:
         raise HTTPException(status_code=401, detail="Not authenticated")
     session = sessions[token]
@@ -82,7 +82,7 @@ async def login(body: LoginRequest, response: Response):
     _clean_expired()
 
     response.set_cookie(
-        key="aries_session",
+        key="scoper_session",
         value=token,
         httponly=True,
         max_age=SESSION_TTL_HOURS * 3600,
@@ -98,10 +98,10 @@ async def login(body: LoginRequest, response: Response):
 
 @router.post("/logout")
 async def logout(response: Response, request: Request):
-    token = request.cookies.get("aries_session")
+    token = request.cookies.get("scoper_session")
     if token and token in sessions:
         del sessions[token]
-    response.delete_cookie("aries_session")
+    response.delete_cookie("scoper_session")
     return {"ok": True}
 
 

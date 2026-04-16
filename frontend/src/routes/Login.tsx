@@ -35,7 +35,7 @@ export default function Login() {
             <Sparkles className="w-8 h-8 text-primary-500" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-surface-900">
-            ARIES
+            Scoper
           </h1>
           <p className="mt-2 text-surface-500 text-sm">
             AI-powered estimation platform

@@ -53,7 +53,7 @@ interface EstimateState {
   deleteEstimate: (id: number) => Promise<void>
 }
 
-const LS_KEY = 'aries_estimates'
+const LS_KEY = 'scoper_estimates'
 
 function saveToLocal(estimates: Estimate[]) {
   try {

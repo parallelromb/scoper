@@ -1,5 +1,5 @@
 /**
- * ARIES v2.0 — Demo Recording Script
+ * Scoper — Demo Recording Script
  * Records a browser walkthrough as video with text overlays, then converts to GIF + MP4.
  */
 
@@ -10,7 +10,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BASE_URL = process.env.ARIES_URL || 'http://localhost:8005';
+const BASE_URL = process.env.SCOPER_URL || 'http://localhost:8005';
 const VIDEO_DIR = resolve(__dirname, 'recordings');
 const OUTPUT_GIF = resolve(__dirname, 'demo.gif');
 const OUTPUT_MP4 = resolve(__dirname, 'demo.mp4');
@@ -24,10 +24,10 @@ async function sleep(ms) {
 /** Inject or update a floating annotation overlay */
 async function showOverlay(page, text) {
   await page.evaluate((t) => {
-    let el = document.getElementById('aries-demo-overlay');
+    let el = document.getElementById('scoper-demo-overlay');
     if (!el) {
       el = document.createElement('div');
-      el.id = 'aries-demo-overlay';
+      el.id = 'scoper-demo-overlay';
       Object.assign(el.style, {
         position: 'fixed',
         bottom: '32px',
@@ -59,13 +59,13 @@ async function showOverlay(page, text) {
 
 async function hideOverlay(page) {
   await page.evaluate(() => {
-    const el = document.getElementById('aries-demo-overlay');
+    const el = document.getElementById('scoper-demo-overlay');
     if (el) el.style.opacity = '0';
   });
 }
 
 async function main() {
-  console.log('🎬 Starting ARIES demo recording...');
+  console.log('🎬 Starting Scoper demo recording...');
 
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
@@ -81,7 +81,7 @@ async function main() {
     console.log('  Scene 1: Login');
     await page.goto(BASE_URL);
     await sleep(1000);
-    await showOverlay(page, 'Sign in to ARIES');
+    await showOverlay(page, 'Sign in to Scoper');
     await sleep(1500);
 
     // Type username with natural delay
@@ -191,7 +191,7 @@ async function main() {
     await hideOverlay(page);
     await page.click('a[href="/"]');
     await sleep(1000);
-    await showOverlay(page, 'ARIES — AI-powered estimation in minutes');
+    await showOverlay(page, 'Scoper — AI-powered estimation in minutes');
     await sleep(2000);
     await hideOverlay(page);
     await sleep(500);
