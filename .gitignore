@@ -30,3 +30,6 @@ static/dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Demo recording raw output (Playwright video artifacts)
+docs/recordings/
