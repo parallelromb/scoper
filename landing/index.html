@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Scoper — Turn a client RFP into a priced SOW in 2 minutes</title>
+<meta name="description" content="For agencies, consultancies, and SIs: upload an RFP or BRD. 9 AI agents return a priced Statement of Work — phases, effort, resources, risks, schedule — in under two minutes. Open source. Runs locally, so client IP never leaves your machine." />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Scoper — RFP-to-SOW in 2 minutes for agencies and consultancies" />
+<meta property="og:description" content="Upload an RFP. 9 AI agents return a priced SOW in under two minutes. Runs local — client IP never leaves your machine. Open source, MIT." />
+<meta property="og:url" content="https://scoper.parallelromb.dev" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎯%3C/text%3E%3C/svg%3E" />
+
+<style>
+:root {
+  --bg: #f5f5f7;
+  --fg: #1d1d1f;
+  --muted: #6e6e73;
+  --card: rgba(255, 255, 255, 0.72);
+  --card-strong: rgba(255, 255, 255, 0.85);
+  --border: rgba(0, 0, 0, 0.06);
+  --accent: #0071e3;
+  --accent-soft: rgba(0, 113, 227, 0.08);
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --pink: #ff375f;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 113, 227, 0.06), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 30%, rgba(255, 55, 95, 0.04), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 0% 70%, rgba(48, 209, 88, 0.04), transparent 60%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(245, 245, 247, 0.72);
+  border-bottom: 1px solid var(--border);
+}
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: 17px;
+}
+.logo-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #0071e3 0%, #ff375f 100%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+}
+nav a.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 24px;
+  transition: color 0.15s ease;
+}
+nav a.nav-link:hover { color: var(--fg); }
+
+section {
+  padding: 96px 0;
+}
+section.tight { padding: 64px 0; }
+
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+h1 {
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.15;
+}
+h3 { font-size: 20px; }
+
+.lede {
+  font-size: clamp(18px, 2.2vw, 22px);
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 640px;
+  margin: 0 0 32px;
+}
+.eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.hero {
+  padding: 140px 0 96px;
+  text-align: center;
+}
+.hero .lede { margin-left: auto; margin-right: auto; }
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 980px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+.btn-primary:hover { background: #0077ed; transform: translateY(-1px); }
+.btn-ghost {
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.btn-ghost:hover { background: var(--card-strong); }
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 800px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+.step {
+  padding: 28px;
+}
+.step-num {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 13px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.step p {
+  color: var(--muted);
+  margin: 8px 0 0;
+  font-size: 15px;
+}
+
+.pill-group {
+  display: inline-flex;
+  padding: 4px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 980px;
+  gap: 4px;
+}
+.pill {
+  padding: 8px 16px;
+  border-radius: 980px;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.pill.active {
+  background: white;
+  color: var(--fg);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  font-weight: 500;
+}
+
+.agents {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 32px;
+}
+@media (max-width: 800px) { .agents { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .agents { grid-template-columns: 1fr; } }
+.agent {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.agent-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.agent-name {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.agent-role {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.feature {
+  padding: 28px;
+}
+.feature h3 { margin-bottom: 8px; }
+.feature p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.price-card {
+  padding: 32px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.price-card.featured {
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 32px rgba(0, 113, 227, 0.08);
+}
+.price-tag {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 12px 0 4px;
+}
+.price-tag .per {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.feat-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 28px;
+}
+.feat-list li {
+  padding: 6px 0;
+  color: var(--muted);
+  font-size: 14.5px;
+  display: flex;
+  gap: 10px;
+}
+.feat-list li::before {
+  content: "✓";
+  color: var(--green);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.price-card .btn { margin-top: auto; justify-content: center; }
+
+.cta-card {
+  padding: 48px 40px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.form {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.form input[type=email] {
+  flex: 1;
+  padding: 13px 18px;
+  font-size: 15px;
+  border: 1px solid var(--border);
+  border-radius: 980px;
+  background: white;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form input[type=email]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+}
+.form-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.form-success {
+  display: none;
+  padding: 16px;
+  background: rgba(48, 209, 88, 0.1);
+  color: #0a7a2a;
+  border-radius: 12px;
+  margin-top: 16px;
+  font-size: 14.5px;
+}
+.form-success.show { display: block; }
+
+footer {
+  padding: 40px 0 60px;
+  color: var(--muted);
+  font-size: 13.5px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 24px;
+}
+footer a:hover { color: var(--fg); }
+
+.pipeline-vis {
+  padding: 32px;
+  overflow-x: auto;
+}
+.pipeline-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: min-content;
+}
+.node {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.node-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.arrow {
+  color: var(--muted);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  text-align: center;
+}
+@media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+.stat-num {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo">
+      <span class="logo-mark">S</span>
+      Scoper
+    </div>
+    <div>
+      <a class="nav-link" href="#how-it-works">How it works</a>
+      <a class="nav-link" href="#agents">Agents</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="https://github.com/parallelromb/scoper" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">For agencies & consultancies · Open source · Local-first</div>
+    <h1>Turn a client RFP<br>into a priced SOW in two minutes.</h1>
+    <p class="lede">
+      Drop in the RFP, BRD, or requirements doc. Nine AI agents work through a visual pipeline and return a complete Statement of Work — phases, effort, rate-carded costs, resource plan, risks, and schedule. Runs fully local with Ollama, so the client's IP never leaves your machine.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+      <a class="btn btn-ghost" href="https://github.com/parallelromb/scoper" target="_blank" rel="noopener">
+        View on GitHub →
+      </a>
+    </div>
+
+    <div class="stats">
+      <div>
+        <div class="stat-num">&lt; 2 min</div>
+        <div class="stat-label">RFP to priced SOW</div>
+      </div>
+      <div>
+        <div class="stat-num">9</div>
+        <div class="stat-label">Specialist agents</div>
+      </div>
+      <div>
+        <div class="stat-num">28</div>
+        <div class="stat-label">Pipeline node types</div>
+      </div>
+      <div>
+        <div class="stat-num">0</div>
+        <div class="stat-label">API keys required</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="how-it-works" class="tight">
+  <div class="container">
+    <h2>How it works</h2>
+    <p class="lede">Three steps from client RFP to a SOW you can send.</p>
+    <div class="grid-3">
+      <div class="card step">
+        <div class="step-num">1</div>
+        <h3>Upload the RFP</h3>
+        <p>Drop the RFP, BRD, SOW template, Jira export, or paste requirements as text. Scoper parses structure, extracts scope items, and detects the delivery domain automatically.</p>
+      </div>
+      <div class="card step">
+        <div class="step-num">2</div>
+        <h3>Pick a pipeline</h3>
+        <p>Start from a template — Quick, Standard, Enterprise, Re-Estimate, or Jira Import — or drag-and-drop your own pipeline from 28 node types. Load your rate card once; reuse it on every engagement.</p>
+      </div>
+      <div class="card step">
+        <div class="step-num">3</div>
+        <h3>Send the SOW</h3>
+        <p>Nine agents work in parallel where they can, in sequence where they must. You get a priced SOW: phases, effort hours, rate-carded costs, a schedule, flagged risks, and an audit trail you can defend in a client review.</p>
+      </div>
+    </div>
+
+    <div class="card pipeline-vis" style="margin-top: 32px;">
+      <div class="pipeline-track">
+        <div class="node"><span class="node-dot" style="background: #8e8e93"></span>RFP Input</div>
+        <span class="arrow">→</span>
+        <div class="node"><span class="node-dot" style="background: #0071e3"></span>ARIA · Requirements</div>
+        <span class="arrow">→</span>
+        <div class="node"><span class="node-dot" style="background: #ff9f0a"></span>NOVA · Estimate</div>
+        <span class="arrow">→</span>
+        <div class="node"><span class="node-dot" style="background: #30d158"></span>CHRONOS · Schedule</div>
+        <span class="arrow">→</span>
+        <div class="node"><span class="node-dot" style="background: #ff375f"></span>SENTINEL · Security</div>
+        <span class="arrow">→</span>
+        <div class="node"><span class="node-dot" style="background: #5e5ce6"></span>Report</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="agents" class="tight">
+  <div class="container">
+    <h2>Nine specialist agents</h2>
+    <p class="lede">Each agent has its own personality, expertise, and tools — defined in YAML, easy to customize.</p>
+    <div class="agents">
+      <div class="card agent"><span class="agent-dot" style="background: #0071e3"></span><div><div class="agent-name">ARIA</div><div class="agent-role">Requirements analyst</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #ff9f0a"></span><div><div class="agent-name">NOVA</div><div class="agent-role">Estimation engine</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #30d158"></span><div><div class="agent-name">CHRONOS</div><div class="agent-role">Schedule planner</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #ff375f"></span><div><div class="agent-name">SENTINEL</div><div class="agent-role">Security reviewer</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #5e5ce6"></span><div><div class="agent-name">ATLAS</div><div class="agent-role">Architecture advisor</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #bf5af2"></span><div><div class="agent-name">ORACLE</div><div class="agent-role">Historical analyst</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #64d2ff"></span><div><div class="agent-name">NEXUS</div><div class="agent-role">Integration specialist</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #ffd60a"></span><div><div class="agent-name">PRISM</div><div class="agent-role">Quality analyst</div></div></div>
+      <div class="card agent"><span class="agent-dot" style="background: #ff6482"></span><div><div class="agent-name">FORGE</div><div class="agent-role">DevOps advisor</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="container">
+    <h2>Built for the agency workflow</h2>
+    <p class="lede">Most estimation tools are built for internal engineering teams. Scoper is built for the way agencies and consultancies actually work — RFP in, priced SOW out, with the reasoning you need to defend the number in a client review.</p>
+    <div class="grid-2">
+      <div class="card feature">
+        <h3>Visual pipeline, not a black box</h3>
+        <p>Drag-and-drop canvas with 28 node types across 6 categories. You see exactly which agents ran, in what order, and why. When a client asks "where did this 240 hours come from?", you can show them.</p>
+      </div>
+      <div class="card feature">
+        <h3>Runs fully local — client IP stays yours</h3>
+        <p>Ollama + Gemma 3 means no API keys, no cloud, no data leaving your machine. Prospective clients are sending you confidential requirements under NDA. Scoper never exfiltrates them.</p>
+      </div>
+      <div class="card feature">
+        <h3>Memory with decay, across engagements</h3>
+        <p>Five-layer memory system with Ebbinghaus decay. Estimates learn from your previous SOWs — retention patterns, client-type risks, which scope items always blow out — while forgetting noise. Every engagement sharpens the next.</p>
+      </div>
+      <div class="card feature">
+        <h3>Your rate card, your agents</h3>
+        <p>Configurable YAML agents let you match your delivery practices. Load your real rate card once, plug in your standard risk library, customize phase names to your methodology. Scoper fits how <em>you</em> scope, not the other way around.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="tight">
+  <div class="container">
+    <h2>Free and open source.</h2>
+    <p class="lede">Scoper itself is MIT-licensed. Hosted tiers are coming for teams that want managed memory, history, and shared pipelines.</p>
+    <div class="grid-3" style="margin-top: 40px;">
+      <div class="card price-card">
+        <h3>Self-hosted</h3>
+        <div class="price-tag">Free<span class="per"> · forever</span></div>
+        <p style="color: var(--muted); margin: 0; font-size: 14px;">Clone, run, own your data.</p>
+        <ul class="feat-list">
+          <li>All 9 agents</li>
+          <li>All 28 pipeline nodes</li>
+          <li>Ollama or cloud LLM</li>
+          <li>Full source code (MIT)</li>
+          <li>Unlimited estimates</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://github.com/parallelromb/scoper" target="_blank" rel="noopener">Clone on GitHub</a>
+      </div>
+      <div class="card price-card featured">
+        <h3>Team <span style="font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 6px; margin-left: 8px; letter-spacing: 0.04em;">COMING SOON</span></h3>
+        <div class="price-tag">$49<span class="per">/user/month</span></div>
+        <p style="color: var(--muted); margin: 0; font-size: 14px;">Shared SOWs, client history, rate cards.</p>
+        <ul class="feat-list">
+          <li>Everything in Self-hosted</li>
+          <li>Managed hosting</li>
+          <li>Team workspaces per client</li>
+          <li>Shared rate cards</li>
+          <li>SOW history + versioning</li>
+          <li>SSO + audit log</li>
+        </ul>
+        <a class="btn btn-primary" href="#waitlist">Join waitlist</a>
+      </div>
+      <div class="card price-card">
+        <h3>Enterprise</h3>
+        <div class="price-tag">Talk<span class="per"> · to us</span></div>
+        <p style="color: var(--muted); margin: 0; font-size: 14px;">On-prem, custom agents, SLA.</p>
+        <ul class="feat-list">
+          <li>Everything in Team</li>
+          <li>On-prem deployment</li>
+          <li>Custom agent development</li>
+          <li>Priority support</li>
+          <li>Procurement + SLA</li>
+        </ul>
+        <a class="btn btn-ghost" href="mailto:hello@parallelromb.dev?subject=Scoper%20Enterprise">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="waitlist" class="tight">
+  <div class="container">
+    <div class="card cta-card">
+      <h2 style="margin-bottom: 12px;">Be first when the hosted version ships.</h2>
+      <p style="color: var(--muted); font-size: 17px; margin: 0;">One email when Team goes live. No newsletter, no spam, nothing else.</p>
+      <form class="form" id="waitlist-form" action="https://formspree.io/f/REPLACE_WITH_FORM_ID" method="POST" onsubmit="return handleSubmit(event)">
+        <input type="email" name="email" placeholder="you@company.com" required />
+        <button type="submit" class="btn btn-primary">Notify me</button>
+      </form>
+      <div class="form-hint">Or star the repo on <a href="https://github.com/parallelromb/scoper" style="color: var(--accent);">GitHub</a> to track development.</div>
+      <div class="form-success" id="form-success">
+        Thanks — you're on the list. We'll email you once. Promise.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo">
+      <span class="logo-mark">S</span>
+      Scoper
+    </div>
+    <div>
+      <a href="https://github.com/parallelromb/scoper" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://parallelromb.dev">parallelromb.dev</a>
+      <a href="mailto:hello@parallelromb.dev">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  const form = e.target;
+  const action = form.getAttribute('action');
+  if (action.includes('REPLACE_WITH_FORM_ID')) {
+    e.preventDefault();
+    document.getElementById('form-success').classList.add('show');
+    document.getElementById('form-success').textContent = 'Form is in demo mode — wire to Formspree/Resend/your endpoint to collect real emails.';
+    return false;
+  }
+}
+</script>
+
+</body>
+</html>

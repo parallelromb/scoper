@@ -1,8 +1,8 @@
 # Scoper
 
-**AI-powered project scoping — turn documents into estimates in minutes**
+**Turn a client RFP into a priced SOW in 2 minutes — built for agencies, consultancies, and SIs.**
 
-> Turn a BRD into a complete project estimate in under 2 minutes — powered by 9 AI agents working in a visual pipeline.
+> Drop in an RFP. Nine AI agents work through a visual pipeline and return a complete Statement of Work — phases, effort, rate-carded costs, schedule, risks — in under two minutes. Runs local, so the client's IP never leaves your machine.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-green.svg)](https://python.org)
@@ -14,9 +14,11 @@
 
 ## What is Scoper?
 
-Enterprise software teams spend **2–4 weeks** manually estimating projects — reading BRDs, cross-referencing history, applying rate cards, building schedules, writing reports. It's slow, inconsistent, and error-prone.
+Agencies, consultancies, and SIs spend **days or weeks** scoping every RFP — re-reading requirements, applying rate cards, cross-referencing past engagements, building schedules, writing the SOW. Same process, every pitch.
 
-**Scoper** runs 9 specialized AI agents in a configurable drag-and-drop pipeline. Upload a document, choose your workflow, and get a complete estimate (phases, effort hours, costs, resources, schedule, risks) — automatically.
+**Scoper** runs 9 specialized AI agents in a configurable drag-and-drop pipeline. Upload the RFP, choose your workflow, and get a priced SOW (phases, effort hours, rate-carded costs, resources, schedule, flagged risks) — fast enough to turn a qualifying call into a priced proposal before the end of the day.
+
+**Why agencies in particular:** every RFP you receive is confidential. Scoper runs fully local with Ollama, so client IP stays on your machine. No SaaS, no API keys, no data leakage. Your rate card, your delivery methodology, your agents — all configurable in YAML.
 
 ### Key Features
 
@@ -28,7 +30,7 @@ Enterprise software teams spend **2–4 weeks** manually estimating projects —
 - **Configurable LLM Providers** — OpenAI, Anthropic, GitHub Models, or fully local via Ollama
 - **Pure TypeScript NLP** — TF-IDF, cosine similarity, domain detection — zero ML dependencies
 - **Zero Licensing Cost** — fully open-source stack
-- **Single Command** — `python run.py` serves everything on port 8000
+- **Single Command** — `python run.py` serves everything on port 8005
 
 ---
 
@@ -55,11 +57,11 @@ cp .env.example .env
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Launch (serves frontend + API on port 8000)
+# Launch (serves frontend + API on port 8005)
 python run.py
 ```
 
-Open [http://localhost:8000](http://localhost:8000) and log in with any username.
+Open [http://localhost:8005](http://localhost:8005) and log in with any username.
 
 ### Option B: Fully Local with Ollama
 
@@ -120,7 +122,7 @@ Scoper is platform-agnostic: macOS, Linux, Windows (WSL2), or any cloud VM.
 └──────────────────────┬──────────────────────────────┘
                        │ REST + WebSocket
 ┌──────────────────────▼──────────────────────────────┐
-│              FastAPI Backend (port 8000)              │
+│              FastAPI Backend (port 8005)              │
 │  ┌──────────┐ ┌──────────┐ ┌───────────────────┐    │
 │  │ Auth     │ │ 60+ API  │ │ Agentic Layer     │    │
 │  │ (cookie) │ │ Endpoints│ │ 9 agents, orchest.│    │
@@ -205,11 +207,11 @@ npm run dev          # Vite dev server on port 5173
 
 # Backend dev
 pip install -r requirements.txt
-uvicorn server.app:app --reload --port 8000
+uvicorn server.app:app --reload --port 8005
 
 # Build for production
 cd frontend && npm run build    # outputs to static/dist/
-python run.py                   # serves SPA + API on port 8000
+python run.py                   # serves SPA + API on port 8005
 ```
 
 ---
