@@ -57,6 +57,9 @@ cp .env.example .env
 # Install Python dependencies
 pip install -r requirements.txt
 
+# Build the frontend
+cd frontend && npm install && npm run build && cd ..
+
 # Launch (serves frontend + API on port 8005)
 python run.py
 ```
@@ -94,6 +97,10 @@ cp .env.example .env
 #   OLLAMA_MODEL=gemma3:27b
 
 pip install -r requirements.txt
+
+# Build the frontend
+cd frontend && npm install && npm run build && cd ..
+
 python run.py
 ```
 
@@ -188,7 +195,7 @@ OLLAMA_HOST=http://localhost:11434
 OLLAMA_MODEL=gemma3:27b
 
 # Server
-PORT=8000
+PORT=8005
 HOST=0.0.0.0
 
 # Auth
