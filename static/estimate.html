@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Project Estimation | Scoper</title>
+<meta name="description" content="Get a free AI-powered project estimate in 60 seconds. 9 specialized AI agents analyze your project for effort, cost, risks, and architecture.">
+<meta property="og:title" content="Free AI Project Estimation | Scoper">
+<meta property="og:description" content="Get a free AI-powered project estimate in 60 seconds. 9 specialized AI agents analyze your project.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://scoper.dev/estimate">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free AI Project Estimation | Scoper">
+<meta name="twitter:description" content="9 AI agents estimate your project in 60 seconds.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Scoper",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "description": "AI-powered project estimation pipeline with 9 specialized agents",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free quick estimate"
+  }
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0b0f;--surface:#12131a;--surface2:#1a1b24;--border:#252633;
+  --text:#e4e4eb;--text2:#9394a1;--accent:#00c8ff;--accent2:#7c5cfc;
+  --gradient:linear-gradient(135deg,#00c8ff 0%,#7c5cfc 100%);
+  --mono:'SF Mono',SFMono-Regular,ui-monospace,'Cascadia Code','Fira Code',Menlo,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;
+  --radius:12px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--sans);
+  line-height:1.6;min-height:100vh;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%,rgba(0,200,255,.08),transparent),
+    linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:100% 100%,60px 60px,60px 60px;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.container{max-width:720px;margin:0 auto;padding:0 24px}
+header{padding:24px 0;text-align:center}
+.logo{font-family:var(--mono);font-size:1.1rem;font-weight:700;letter-spacing:2px;
+  background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-transform:uppercase}
+.badge{display:inline-block;font-size:.7rem;padding:3px 10px;border-radius:100px;
+  border:1px solid var(--border);color:var(--text2);margin-left:12px;
+  font-family:var(--mono);vertical-align:middle;-webkit-text-fill-color:var(--text2)}
+
+/* Hero */
+.hero{text-align:center;padding:48px 0 32px}
+.hero h1{font-family:var(--mono);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;
+  line-height:1.2;margin-bottom:16px;letter-spacing:-.5px}
+.hero h1 span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--text2);font-size:1.05rem;max-width:540px;margin:0 auto}
+.agent-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px}
+.agent-chip{font-family:var(--mono);font-size:.65rem;padding:4px 12px;border-radius:100px;
+  border:1px solid var(--border);color:var(--text2);letter-spacing:.5px;transition:all .3s}
+.agent-chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Form */
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px;margin-top:32px}
+.form-card h2{font-family:var(--mono);font-size:1rem;margin-bottom:24px;color:var(--text2);
+  letter-spacing:1px;text-transform:uppercase}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);
+  margin-bottom:6px;font-family:var(--mono);letter-spacing:.5px}
+.field textarea,.field input,.field select{
+  width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:12px 14px;color:var(--text);font-size:.95rem;font-family:var(--sans);
+  transition:border-color .2s,box-shadow .2s;outline:none}
+.field textarea:focus,.field input:focus,.field select:focus{
+  border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,200,255,.1)}
+.field textarea{resize:vertical;min-height:120px}
+.field select{cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239394a1' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center}
+.field select option{background:var(--surface);color:var(--text)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:540px){.row{grid-template-columns:1fr}}
+.field .hint{font-size:.72rem;color:var(--text2);margin-top:4px}
+.field input.error,.field textarea.error{border-color:#ff4466}
+.error-msg{color:#ff4466;font-size:.75rem;margin-top:4px;display:none}
+
+.submit-btn{
+  width:100%;padding:14px;border:none;border-radius:8px;font-size:1rem;font-weight:600;
+  font-family:var(--sans);cursor:pointer;color:#fff;
+  background:var(--gradient);
+  transition:opacity .2s,transform .1s}
+.submit-btn:hover{opacity:.9}
+.submit-btn:active{transform:scale(.98)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Progress */
+.progress-section{display:none;text-align:center;padding:48px 0}
+.progress-section.active{display:block}
+.progress-ring{width:120px;height:120px;margin:0 auto 32px;position:relative}
+.progress-ring svg{transform:rotate(-90deg)}
+.progress-ring circle{fill:none;stroke-width:4}
+.progress-ring .track{stroke:var(--border)}
+.progress-ring .fill{stroke:url(#grad);stroke-linecap:round;
+  stroke-dasharray:339.292;stroke-dashoffset:339.292;transition:stroke-dashoffset .5s ease}
+.progress-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--mono);font-size:1.4rem;font-weight:700}
+.progress-label{font-family:var(--mono);font-size:.85rem;color:var(--accent);margin-bottom:24px}
+
+.agent-list{text-align:left;max-width:400px;margin:0 auto}
+.agent-row{display:flex;align-items:center;gap:12px;padding:10px 16px;
+  border-radius:8px;margin-bottom:4px;font-size:.85rem;transition:all .3s}
+.agent-row.active{background:var(--surface);color:var(--accent)}
+.agent-row.done{color:var(--text2)}
+.agent-row.done .agent-status{color:#22c55e}
+.agent-row.pending{color:var(--text2);opacity:.4}
+.agent-icon{width:20px;text-align:center;font-family:var(--mono);font-size:.75rem;flex-shrink:0}
+.agent-name{font-family:var(--mono);font-weight:600;flex-shrink:0;width:90px}
+.agent-role{color:var(--text2);font-size:.78rem}
+.agent-status{margin-left:auto;font-family:var(--mono);font-size:.7rem;flex-shrink:0}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Results */
+.results-section{display:none;padding:48px 0 80px}
+.results-section.active{display:block}
+.results-header{text-align:center;margin-bottom:32px}
+.results-header h2{font-family:var(--mono);font-size:1.4rem;margin-bottom:8px}
+.results-header p{color:var(--text2);font-size:.9rem}
+.estimate-id{font-family:var(--mono);font-size:.75rem;color:var(--text2);
+  background:var(--surface);display:inline-block;padding:4px 12px;border-radius:100px;margin-top:8px}
+
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:540px){.metrics{grid-template-columns:1fr}}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px}
+.metric-card .label{font-family:var(--mono);font-size:.7rem;color:var(--text2);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.metric-card .value{font-family:var(--mono);font-size:1.5rem;font-weight:700}
+.metric-card .value.gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.metric-card .sub{font-size:.78rem;color:var(--text2);margin-top:4px}
+
+.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;margin-bottom:16px}
+.detail-card h3{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;
+  letter-spacing:1px;color:var(--text2);margin-bottom:14px}
+.detail-card ul{list-style:none}
+.detail-card li{padding:6px 0;font-size:.9rem;display:flex;align-items:flex-start;gap:10px}
+.detail-card li::before{content:'';display:inline-block;width:6px;height:6px;
+  border-radius:50%;margin-top:8px;flex-shrink:0}
+.roles-card li::before{background:var(--accent)}
+.risks-card li::before{background:#ff4466}
+.stack-card li::before{background:var(--accent2)}
+
+.complexity-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:12px}
+.complexity-fill{height:100%;border-radius:3px;background:var(--gradient);transition:width 1s ease}
+
+.cta-section{text-align:center;margin-top:40px;padding:32px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.cta-section h3{font-family:var(--mono);font-size:1.1rem;margin-bottom:8px}
+.cta-section p{color:var(--text2);font-size:.9rem;margin-bottom:20px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-btn{display:inline-block;padding:12px 28px;border-radius:8px;font-weight:600;
+  font-size:.9rem;cursor:pointer;border:none;font-family:var(--sans);transition:all .2s}
+.cta-primary{background:var(--gradient);color:#fff}
+.cta-primary:hover{opacity:.9;text-decoration:none}
+.cta-secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+.cta-secondary:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+
+.footer{text-align:center;padding:32px 0;color:var(--text2);font-size:.78rem;
+  border-top:1px solid var(--border);margin-top:48px}
+
+/* Animate in */
+.fade-up{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0">
+  <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#00c8ff"/>
+    <stop offset="100%" stop-color="#7c5cfc"/>
+  </linearGradient></defs>
+</svg>
+
+<header>
+  <div class="container">
+    <span class="logo">Scoper</span><span class="badge">9-Agent Pipeline</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero" id="heroSection">
+    <h1>Get a Free AI Project Estimate<br>in <span>60 Seconds</span></h1>
+    <p>Our 9 specialized AI agents analyze your project for requirements, architecture, timeline, cost, risks, and more.</p>
+    <div class="agent-chips">
+      <span class="agent-chip">ARIA</span><span class="agent-chip">ATLAS</span>
+      <span class="agent-chip">CHRONOS</span><span class="agent-chip">NEXUS</span>
+      <span class="agent-chip">PRISM</span><span class="agent-chip">SENTINEL</span>
+      <span class="agent-chip">MAVEN</span><span class="agent-chip">ORACLE</span>
+      <span class="agent-chip">FORGE</span>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="form-card" id="formSection">
+    <h2>Describe your project</h2>
+    <form id="estimateForm" novalidate>
+      <div class="field">
+        <label for="description">Project Description</label>
+        <textarea id="description" placeholder="Describe what you want to build in 2-3 sentences. The more detail, the better the estimate." required></textarea>
+        <div class="hint">Minimum 2 sentences for an accurate analysis</div>
+        <div class="error-msg" id="descError">Please provide at least 2 sentences describing your project.</div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="projectType">Project Type</label>
+          <select id="projectType" required>
+            <option value="">Select type...</option>
+            <option>Web App</option>
+            <option>Mobile App</option>
+            <option>SaaS Platform</option>
+            <option>API/Backend</option>
+            <option>AI/ML System</option>
+            <option>E-commerce</option>
+            <option>Other</option>
+          </select>
+          <div class="error-msg" id="typeError">Please select a project type.</div>
+        </div>
+        <div class="field">
+          <label for="teamSize">Team Size Preference</label>
+          <select id="teamSize" required>
+            <option value="">Select size...</option>
+            <option>Solo dev</option>
+            <option>Small team (2-5)</option>
+            <option>Medium (5-15)</option>
+            <option>Large (15+)</option>
+          </select>
+          <div class="error-msg" id="teamError">Please select team size.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="timeline">Timeline Preference</label>
+        <select id="timeline" required>
+          <option value="">Select timeline...</option>
+          <option>ASAP</option>
+          <option>1-3 months</option>
+          <option>3-6 months</option>
+          <option>6-12 months</option>
+          <option>Flexible</option>
+        </select>
+        <div class="error-msg" id="timeError">Please select a timeline.</div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="email">Email Address <span style="color:var(--accent)">*</span></label>
+          <input type="email" id="email" placeholder="you@company.com" required>
+          <div class="error-msg" id="emailError">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label for="userName">Name <span style="color:var(--text2);font-weight:400">(optional)</span></label>
+          <input type="text" id="userName" placeholder="Your name">
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Analyze My Project</button>
+    </form>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="progress-section" id="progressSection">
+    <div class="progress-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle class="track" cx="60" cy="60" r="54"/>
+        <circle class="fill" id="progressCircle" cx="60" cy="60" r="54"/>
+      </svg>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+    <div class="progress-label" id="progressLabel">Initializing pipeline...</div>
+
+    <div class="agent-list" id="agentList"></div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results-section" id="resultsSection">
+    <div class="results-header">
+      <h2>Estimate Complete</h2>
+      <p>Here's what our 9 AI agents found.</p>
+      <div class="estimate-id" id="estimateId">EST-0000</div>
+    </div>
+
+    <div class="metrics" id="metricsGrid"></div>
+
+    <div class="detail-card roles-card fade-up" id="rolesCard">
+      <h3>Suggested Team</h3>
+      <ul id="rolesList"></ul>
+    </div>
+
+    <div class="detail-card risks-card fade-up" id="risksCard">
+      <h3>Key Risks Identified</h3>
+      <ul id="risksList"></ul>
+    </div>
+
+    <div class="detail-card stack-card fade-up" id="stackCard">
+      <h3>Recommended Tech Stack</h3>
+      <ul id="stackList"></ul>
+    </div>
+
+    <div class="detail-card fade-up">
+      <h3>Complexity Score</h3>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:.8rem;color:var(--text2)">
+        <span>Simple</span><span id="complexityValue">0/100</span><span>Complex</span>
+      </div>
+      <div class="complexity-bar"><div class="complexity-fill" id="complexityFill" style="width:0"></div></div>
+    </div>
+
+    <div class="cta-section fade-up">
+      <h3>Want the full 20-page deep analysis?</h3>
+      <p>Our 9 AI agents generate a comprehensive report covering architecture diagrams, detailed risk mitigation plans, sprint breakdowns, and hiring recommendations.</p>
+      <div class="cta-row">
+        <a href="mailto:srikanth.panchavati@gmail.com?subject=Full%20Scoper%20Report%20Request&body=I'd%20like%20the%20full%20report%20for%20my%20project." class="cta-btn cta-primary">Get Full Report — $49</a>
+        <a href="mailto:srikanth.panchavati@gmail.com?subject=Scoper%20Consultation%20Request" class="cta-btn cta-secondary">Book a Consultation</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    Scoper &mdash; AI-powered project estimation &middot; 9 agents, one pipeline, zero guesswork
+  </div>
+</footer>
+
+<script>
+// Agent definitions
+const AGENTS = [
+  { id:'aria', name:'ARIA', role:'Requirements Analysis', icon:'01' },
+  { id:'atlas', name:'ATLAS', role:'Architecture Design', icon:'02' },
+  { id:'chronos', name:'CHRONOS', role:'Timeline Planning', icon:'03' },
+  { id:'nexus', name:'NEXUS', role:'Dependency Mapping', icon:'04' },
+  { id:'prism', name:'PRISM', role:'Risk Assessment', icon:'05' },
+  { id:'sentinel', name:'SENTINEL', role:'Security Review', icon:'06' },
+  { id:'maven', name:'MAVEN', role:'Cost Estimation', icon:'07' },
+  { id:'oracle', name:'ORACLE', role:'Quality Planning', icon:'08' },
+  { id:'forge', name:'FORGE', role:'DevOps Strategy', icon:'09' },
+];
+
+// Project profiles (mirrors backend)
+const PROFILES = {
+  'Web App':{ base:[4,8], rate:150,
+    roles:['Frontend Engineer','Backend Engineer','UI/UX Designer','QA Engineer'],
+    stack:['React','Node.js / Python','PostgreSQL','AWS / Vercel'],
+    risks:['Scope creep on UI requirements','Third-party API integration delays','Cross-browser compatibility issues']},
+  'Mobile App':{ base:[6,12], rate:165,
+    roles:['Mobile Engineer (iOS)','Mobile Engineer (Android)','Backend Engineer','UI/UX Designer','QA Engineer'],
+    stack:['React Native / Swift / Kotlin','Firebase / Supabase','REST / GraphQL API','App Store CI/CD'],
+    risks:['Platform-specific bugs and edge cases','App store review rejection cycles','Device fragmentation testing overhead']},
+  'SaaS Platform':{ base:[10,20], rate:170,
+    roles:['Full-Stack Engineer','Backend Engineer','DevOps Engineer','UI/UX Designer','Product Manager','QA Engineer'],
+    stack:['React / Next.js','Python / Go microservices','PostgreSQL + Redis','Stripe billing','AWS / GCP'],
+    risks:['Multi-tenancy architecture complexity','Billing and subscription edge cases','Data isolation and compliance (SOC2, GDPR)']},
+  'API/Backend':{ base:[3,6], rate:155,
+    roles:['Backend Engineer','DevOps Engineer','Technical Writer','QA Engineer'],
+    stack:['Python FastAPI / Go / Node.js','PostgreSQL / MongoDB','Redis caching','Docker + Kubernetes'],
+    risks:['API versioning and backward compatibility','Rate limiting and abuse prevention','Latency under load spikes']},
+  'AI/ML System':{ base:[8,18], rate:195,
+    roles:['ML Engineer','Data Engineer','Backend Engineer','MLOps Engineer','Domain Expert'],
+    stack:['Python','PyTorch / TensorFlow','Vector DB (Pinecone / pgvector)','FastAPI serving layer','GPU infrastructure'],
+    risks:['Model accuracy below production threshold','Training data quality and bias','Inference latency exceeding SLA']},
+  'E-commerce':{ base:[6,14], rate:155,
+    roles:['Full-Stack Engineer','Backend Engineer','UI/UX Designer','QA Engineer','Payment Integration Specialist'],
+    stack:['Next.js / Shopify Hydrogen','Stripe / PayPal','PostgreSQL','CDN + Edge caching'],
+    risks:['Payment processing edge cases','Inventory sync across channels','PCI compliance requirements']},
+  'Other':{ base:[4,10], rate:155,
+    roles:['Full-Stack Engineer','Backend Engineer','UI/UX Designer','QA Engineer'],
+    stack:['React / Next.js','Python / Node.js','PostgreSQL','Docker'],
+    risks:['Unclear requirements leading to rework','Integration complexity with existing systems','Performance bottlenecks at scale']},
+};
+
+const TEAM_MULT = {'Solo dev':1.8,'Small team (2-5)':1.0,'Medium (5-15)':0.75,'Large (15+)':0.6};
+const TIME_MULT = {'ASAP':1.4,'1-3 months':1.1,'3-6 months':1.0,'6-12 months':0.9,'Flexible':0.85};
+const TIME_LABELS = {
+  'ASAP':'Aggressive — expect parallel workstreams',
+  '1-3 months':'Tight but achievable with focus',
+  '3-6 months':'Comfortable with room for iteration',
+  '6-12 months':'Relaxed — thorough testing and polish',
+  'Flexible':'Optimized for quality over speed',
+};
+
+function complexityFromDesc(desc){
+  let s=30;const words=desc.toLowerCase().split(/\s+/);const wc=words.length;
+  if(wc>100)s+=25;else if(wc>50)s+=15;else if(wc>25)s+=8;
+  const kws=['real-time','realtime','ai','ml','machine learning','blockchain','distributed',
+    'microservices','multi-tenant','compliance','hipaa','gdpr','encryption','streaming',
+    'video','payments','integration','api','migrate','legacy','scale','millions','enterprise',
+    'marketplace','concurrent','saas'];
+  const joined=words.join(' ');
+  kws.forEach(k=>{if(joined.includes(k))s+=4});
+  return Math.min(s,95);
+}
+
+function generateEstimate(data){
+  const p=PROFILES[data.projectType]||PROFILES['Other'];
+  const tm=TEAM_MULT[data.teamSize]||1;const timm=TIME_MULT[data.timeline]||1;
+  const c=complexityFromDesc(data.description);const cm=0.7+(c/100)*0.8;
+  let elo=Math.max(2,Math.round(p.base[0]*tm*timm*cm));
+  let ehi=Math.max(elo+2,Math.round(p.base[1]*tm*timm*cm));
+  const clo=Math.round(elo*40*p.rate/100)*100;
+  const chi=Math.round(ehi*40*p.rate/100)*100;
+  let roles=[...p.roles];
+  if(data.teamSize==='Solo dev')roles=roles.slice(0,2);
+  else if(data.teamSize==='Small team (2-5)')roles=roles.slice(0,4);
+  return {
+    id:'EST-'+Math.random().toString(36).substr(2,6).toUpperCase(),
+    effortLow:elo,effortHigh:ehi,costLow:clo,costHigh:chi,
+    roles,risks:p.risks,stack:p.stack,
+    timelineNote:TIME_LABELS[data.timeline]||'Standard delivery',
+    complexity:c
+  };
+}
+
+// DOM
+const form=document.getElementById('estimateForm');
+const formSection=document.getElementById('formSection');
+const heroSection=document.getElementById('heroSection');
+const progressSection=document.getElementById('progressSection');
+const resultsSection=document.getElementById('resultsSection');
+
+function validate(){
+  let ok=true;
+  const desc=document.getElementById('description');
+  const email=document.getElementById('email');
+  const ptype=document.getElementById('projectType');
+  const tsize=document.getElementById('teamSize');
+  const tline=document.getElementById('timeline');
+
+  // reset
+  document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none');
+  document.querySelectorAll('.error').forEach(e=>e.classList.remove('error'));
+
+  if(desc.value.trim().split(/[.!?]+/).filter(s=>s.trim().length>5).length<2){
+    desc.classList.add('error');document.getElementById('descError').style.display='block';ok=false;
+  }
+  if(!ptype.value){ptype.classList.add('error');document.getElementById('typeError').style.display='block';ok=false}
+  if(!tsize.value){tsize.classList.add('error');document.getElementById('teamError').style.display='block';ok=false}
+  if(!tline.value){tline.classList.add('error');document.getElementById('timeError').style.display='block';ok=false}
+  if(!email.value||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){
+    email.classList.add('error');document.getElementById('emailError').style.display='block';ok=false;
+  }
+  return ok;
+}
+
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(!validate())return;
+
+  const data={
+    description:document.getElementById('description').value.trim(),
+    projectType:document.getElementById('projectType').value,
+    teamSize:document.getElementById('teamSize').value,
+    timeline:document.getElementById('timeline').value,
+    email:document.getElementById('email').value.trim(),
+    name:document.getElementById('userName').value.trim(),
+  };
+
+  // Save lead to localStorage
+  const leads=JSON.parse(localStorage.getItem('scoper_leads')||'[]');
+  leads.push({...data,timestamp:new Date().toISOString()});
+  localStorage.setItem('scoper_leads',JSON.stringify(leads));
+
+  // Try API (non-blocking)
+  fetch('/api/public/estimate',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      project_description:data.description,project_type:data.projectType,
+      team_size:data.teamSize,timeline:data.timeline,
+      email:data.email,name:data.name
+    })
+  }).catch(()=>{});
+
+  // Generate client-side estimate
+  const estimate=generateEstimate(data);
+  runPipeline(estimate);
+});
+
+function runPipeline(estimate){
+  heroSection.style.display='none';
+  formSection.style.display='none';
+  progressSection.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const list=document.getElementById('agentList');
+  list.innerHTML=AGENTS.map(a=>`
+    <div class="agent-row pending" id="agent-${a.id}">
+      <div class="agent-icon">${a.icon}</div>
+      <div class="agent-name">${a.name}</div>
+      <div class="agent-role">${a.role}</div>
+      <div class="agent-status" id="status-${a.id}">waiting</div>
+    </div>`).join('');
+
+  const circle=document.getElementById('progressCircle');
+  const pctEl=document.getElementById('progressPct');
+  const labelEl=document.getElementById('progressLabel');
+  const circumference=2*Math.PI*54;
+
+  let idx=0;
+  function nextAgent(){
+    if(idx>=AGENTS.length){
+      setTimeout(()=>showResults(estimate),600);
+      return;
+    }
+    // Mark previous as done
+    if(idx>0){
+      const prev=AGENTS[idx-1];
+      const prevRow=document.getElementById('agent-'+prev.id);
+      prevRow.classList.remove('active');prevRow.classList.add('done');
+      document.getElementById('status-'+prev.id).innerHTML='&#10003;';
+    }
+    const agent=AGENTS[idx];
+    const row=document.getElementById('agent-'+agent.id);
+    row.classList.remove('pending');row.classList.add('active');
+    document.getElementById('status-'+agent.id).innerHTML='<span class="spinner"></span>';
+    labelEl.textContent=agent.name+' — '+agent.role+'...';
+
+    const pct=Math.round(((idx+1)/AGENTS.length)*100);
+    pctEl.textContent=pct+'%';
+    circle.style.strokeDashoffset=circumference-(circumference*(pct/100));
+
+    idx++;
+    setTimeout(nextAgent, 700+Math.random()*500);
+  }
+
+  setTimeout(nextAgent,400);
+}
+
+function fmt$(n){return '$'+n.toLocaleString()}
+
+function showResults(est){
+  progressSection.classList.remove('active');
+  resultsSection.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  document.getElementById('estimateId').textContent=est.id;
+
+  const mg=document.getElementById('metricsGrid');
+  mg.innerHTML=`
+    <div class="metric-card fade-up">
+      <div class="label">Estimated Effort</div>
+      <div class="value gradient">${est.effortLow}–${est.effortHigh} weeks</div>
+      <div class="sub">person-weeks of development</div>
+    </div>
+    <div class="metric-card fade-up">
+      <div class="label">Estimated Cost</div>
+      <div class="value gradient">${fmt$(est.costLow)} – ${fmt$(est.costHigh)}</div>
+      <div class="sub">at market contractor rates</div>
+    </div>
+    <div class="metric-card fade-up">
+      <div class="label">Team Size</div>
+      <div class="value">${est.roles.length}</div>
+      <div class="sub">recommended specialists</div>
+    </div>
+    <div class="metric-card fade-up">
+      <div class="label">Timeline Note</div>
+      <div class="value" style="font-size:1rem;line-height:1.4">${est.timelineNote}</div>
+    </div>`;
+
+  const rl=document.getElementById('rolesList');
+  rl.innerHTML=est.roles.map(r=>`<li>${r}</li>`).join('');
+  const rk=document.getElementById('risksList');
+  rk.innerHTML=est.risks.map(r=>`<li>${r}</li>`).join('');
+  const sl=document.getElementById('stackList');
+  sl.innerHTML=est.stack.map(s=>`<li>${s}</li>`).join('');
+
+  document.getElementById('complexityValue').textContent=est.complexity+'/100';
+  setTimeout(()=>{document.getElementById('complexityFill').style.width=est.complexity+'%'},200);
+
+  // Stagger fade-ups
+  document.querySelectorAll('.fade-up').forEach((el,i)=>{
+    setTimeout(()=>el.classList.add('visible'),150*i);
+  });
+}
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@ from server.routes.estimates import router as estimates_router
 from server.routes.pipelines import router as pipelines_router
 from server.routes.agents import router as agents_router
 from server.routes.memories import router as memories_router
+from server.routes.public_estimate import router as public_estimate_router
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static" / "dist"
 
@@ -41,11 +42,22 @@ app.include_router(estimates_router)
 app.include_router(pipelines_router)
 app.include_router(agents_router)
 app.include_router(memories_router)
+app.include_router(public_estimate_router)
+
+ESTIMATE_HTML = Path(__file__).resolve().parent.parent / "static" / "estimate.html"
 
 # Static files
 if STATIC_DIR.exists():
     app.mount("/assets", StaticFiles(directory=str(STATIC_DIR / "assets")), name="assets") if (STATIC_DIR / "assets").exists() else None
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+# Public estimate landing page
+@app.get("/estimate")
+async def estimate_page():
+    if ESTIMATE_HTML.exists():
+        return FileResponse(str(ESTIMATE_HTML), media_type="text/html")
+    return JSONResponse(status_code=404, content={"detail": "Estimate page not found"})
 
 
 # SPA catch-all — serve index.html for non-API paths
